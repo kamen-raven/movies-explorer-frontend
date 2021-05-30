@@ -1,0 +1,13 @@
+.promo {
+  background: #073042;
+  background-image: url(../../images/landing-logo.svg);
+  background-size: 320px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media (max-width: 425px) {
+  .promo  {
+    background-size: 248px;
+  }
+}

@@ -1,0 +1,150 @@
+.about-project {
+  background-color: #fff;
+  padding: 110px 0;
+}
+
+@media (max-width: 768px) {
+  .about-project {
+    padding: 90px 0;
+  }
+}
+
+@media (max-width: 425px) {
+  .about-project {
+    padding: 70px 0;
+  }
+}
+
+.about-project__container {
+  max-width: 1140px;
+  margin: 0 70px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 26px 40px;
+}
+
+@media (max-width: 768px) {
+  .about-project__container {
+    gap: 22px 30px;
+    margin: 0 50px;
+  }
+}
+
+@media (max-width: 425px) {
+  .about-project__container {
+    margin: 0 18px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+
+.about-project__subtitle {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  color: #000000;
+  grid-row: 1;
+  margin: 0;
+}
+
+@media (max-width: 425px) {
+  .about-project__subtitle {
+    grid-row: auto;
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+
+.about-project__paragraph {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .about-project__paragraph {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media (max-width: 425px) {
+  .about-project__paragraph {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 40px;
+  }
+}
+
+.about-project__progressbar {
+  max-width: 1140px;
+  margin: 110px 70px 0;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: auto;
+  row-gap: 14px;
+  border-top: 1px solid #E8E8E8;
+}
+
+@media (max-width: 768px) {
+  .about-project__progressbar{
+    grid-template-columns: 140px 1fr;
+    margin: 93px 50px 0;
+  }
+}
+
+@media (max-width: 425px) {
+  .about-project__progressbar{
+    grid-template-columns: 100px 1fr;
+    row-gap: 10px;
+    margin: 20px 18px 0;
+  }
+}
+
+.about-project__progressbar-info {
+  font-style: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  justify-content: center;
+  font-weight: normal;
+  color: #A0A0A0;
+  margin: 0;
+}
+
+@media (max-width: 425px) {
+  .about-project__progressbar-info {
+    font-size: 11px;
+    line-height: 13px;
+  }
+}
+
+.about-project__progressbar-info_time {
+  font-weight: 500;
+  color: #000000;
+  padding: 9.5px 0;
+}
+
+@media (max-width: 425px) {
+  .about-project__progressbar-info_time {
+    padding: 11px 0;
+  }
+}
+
+.about-project__time-container {
+  width: 100%;
+  grid-row: 1;
+  background: #F2F2F2;
+}
+
+.about-project__time-container_short {
+  background: #2BE080;
+}

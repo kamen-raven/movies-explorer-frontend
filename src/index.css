@@ -1,13 +1,61 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+div, main, ul, li, section, img, button, a, p, h1, h2, h3, fieldset, input, form, header, footer {
+  outline: solid red 1px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+
+
+/* vendor */
+@import url(./vendor/normalize.css);
+
+/* fonts */
+@import url(./vendor/fonts/inter.css);
+
+/* App */
+@import url(./components/App/App.css);
+/* Header */
+@import url(./components/Header/Header.css);
+/* Footer */
+@import url(./components/Footer/Footer.css);
+
+/* Main */
+
+@import url(./components/Promo/Promo.css);
+@import url(./components/NavTab/NavTab.css);
+@import url(./components/AboutProject/AboutProject.css);
+@import url(./components/Techs/Techs.css);
+@import url(./components/AboutMe/AboutMe.css);
+@import url(./components/Portfolio/Portfolio.css);
+@import url(./components/Main/Main.css);
+/* Register */
+@import url(./components/Register/Register.css);
+@import url(./components/RegisterForm/RegisterForm.css);
+
+/* Login */
+@import url(./components/Login/Login.css);
+@import url(./components/LoginForm/LoginForm.css);
+
+/* Profile */
+@import url(./components/Profile/Profile.css);
+@import url(./components/ProfileForm/ProfileForm.css);
+
+/* InfoTooltip */
+@import url(./components/InfoTooltip/InfoTooltip.css);
+
+/* Preloader */
+@import url(./components/Preloader/Preloader.css);
+
+/* Movies */
+@import url(./components/Movies/Movies.css);
+@import url(./components/SearchForm/SearchForm.css);
+@import url(./components/FilterCheckbox/FilterCheckbox.css);
+@import url(./components/MoviesCardList/MoviesCardList.css);
+@import url(./components/MoviesCard/MoviesCard.css);
+
+/* SavedMovies */
+@import url(./components/SavedMovies/SavedMovies.css);
+
+/* Navigation */
+@import url(./components/Navigation/Navigation.css);
+
+/* PageNoFound */
+@import url(./components/PageNoFound/PageNoFound.css);
