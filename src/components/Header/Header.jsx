@@ -9,15 +9,15 @@ function Header(props) {
       <Route exact path="/">
         <header className="header header_theme_dark">
           <div className="header__container container">
-            <Link className="header__logo"
-                  to="/"
+            <Link to="/"
+                  className="logo logo_place_main"
                   aria-label="Главная страница" />
             <ul className="list list_place_header">
               <li className="header__links">
                 <Link className="link header__link header__link_theme_dark"
                       to="/signup">
                   Регистрация
-              </Link>
+                </Link>
               </li>
               <li className="header__links">
                 <Link className="link header__link header__link_type_button "
@@ -33,27 +33,29 @@ function Header(props) {
       <Route path={["/movies", "/saved-movies", "/profile"]}>
         <header className="header">
           <div className="header__container container">
-            <Link className="header__logo"
-                  to="/"
+            <Link to="/"
+                  className="logo logo_place_main"
                   aria-label="Главная страница" />
-
             <nav className="header__nav">
-
-
-              <NavLink className="link header__link "
-                to="/movies">
+              <NavLink to="/movies"
+                      className="link header__nav-link"
+                      activeClassName="header__nav-link_active">
                 Фильмы
               </NavLink>
-
-              <NavLink className="link header__link"
-                to="/saved-movies">
+              <NavLink to="/saved-movies"
+                      className="link header__nav-link"
+                      activeClassName="header__nav-link_active">
                 Сохранённые фильмы
                 </NavLink>
-
             </nav>
-            <Link className="header__logo"
-              to="/"
-              aria-label="Главная страница" />
+
+              <Link to="/profile"
+                    className="link header__profile-link header__profile-button"
+                    activeClassName="header__profile-button_active">
+                      <span className="heder__profile-icon"></span>
+                      Аккаунт
+              </Link>
+
           </div>
         </header>
       </Route>
