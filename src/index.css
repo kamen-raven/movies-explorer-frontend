@@ -1,61 +1,9 @@
-div, main, ul, li, section, img, button, a, p, h1, h2, h3, fieldset, input, form, header, footer {
+/* div, main, ul, li, section, img, button, a, p, h1, h2, h3, fieldset, input, form, header, footer {
   outline: solid red 1px;
-}
+} */
 
 /* vendor */
 @import url(./vendor/normalize.css);
 
 /* fonts */
 @import url(./vendor/fonts/inter.css);
-
-/* App */
-@import url(./components/App/App.css);
-/* Header */
-@import url(./components/Header/Header.css);
-/* Footer */
-@import url(./components/Footer/Footer.css);
-
-/* LandingPage */
-@import url(./components/LandingPage/LandingPage.css);
-@import url(./components/Promo/Promo.css);
-@import url(./components/NavTab/NavTab.css);
-@import url(./components/AboutProject/AboutProject.css);
-@import url(./components/Techs/Techs.css);
-@import url(./components/AboutMe/AboutMe.css);
-@import url(./components/Portfolio/Portfolio.css);
-@import url(./components/LandingPage/LandingPage.css);
-
-
-/* AuthPage */
-@import url(./components/AuthPage/AuthPage.css);
-/* Register */
-@import url(./components/Register/Register.css);
-/* Login */
-@import url(./components/Login/Login.css);
-
-/* Profile */
-@import url(./components/Profile/Profile.css);
-@import url(./components/ProfileForm/ProfileForm.css);
-
-/* InfoTooltip */
-@import url(./components/InfoTooltip/InfoTooltip.css);
-
-/* Preloader */
-@import url(./components/Preloader/Preloader.css);
-
-/* Movies */
-@import url(./components/Main/Main.css);
-@import url(./components/Movies/Movies.css);
-@import url(./components/SearchForm/SearchForm.css);
-@import url(./components/FilterCheckbox/FilterCheckbox.css);
-@import url(./components/MoviesCardList/MoviesCardList.css);
-@import url(./components/MoviesCard/MoviesCard.css);
-
-/* SavedMovies */
-@import url(./components/SavedMovies/SavedMovies.css);
-
-/* Navigation */
-@import url(./components/Navigation/Navigation.css);
-
-/* PageNoFound */
-@import url(./components/PageNoFound/PageNoFound.css);

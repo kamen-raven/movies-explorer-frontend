@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
+
+import './Login.css';
 
 function Login(props) {
   //начальные значения данных инпутов
@@ -23,7 +25,7 @@ function Login(props) {
           autoComplete="off"
           required />
         <span className="login-page__input-error"
-          id="input-singup-email-error">
+          id="input-singup-email-error">Тут будет отображаться ошибка валидации
         </span>
         <label className="login-page__label"
           htmlFor="input-singup-pass">
@@ -38,7 +40,7 @@ function Login(props) {
           autoComplete="off"
           required />
         <span className="login-page__input-error"
-          id="input-singup-pass-error">
+          id="input-singup-pass-error">Тут будет отображаться ошибка валидации
         </span>
       </fieldset>
     </AuthPage>

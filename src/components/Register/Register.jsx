@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import AuthPage from "../AuthPage/AuthPage";
+
+import './Register.css';
 
 function Register(props) {
 
@@ -17,7 +19,7 @@ function Register(props) {
         <input
           className="register-page__input register-page__input_singup_username"
           id="input-singup-username"
-          type="username"
+          type="text"
           name="username"
           autoComplete="off"
           required
@@ -25,7 +27,7 @@ function Register(props) {
         <span
           className="register-page__input-error"
           id="input-singup-username-error"
-        ></span>
+        >Тут будет отображаться ошибка валидации</span>
         <label className="register-page__label" htmlFor="input-singup-email">
           E-mail
         </label>
@@ -40,7 +42,7 @@ function Register(props) {
         <span
           className="register-page__input-error"
           id="input-singup-email-error"
-        ></span>
+        >Тут будет отображаться ошибка валидации</span>
         <label className="register-page__label" htmlFor="input-singup-pass">
           Пароль
         </label>
@@ -57,7 +59,7 @@ function Register(props) {
         <span
           className="register-page__input-error"
           id="input-singup-pass-error"
-        ></span>
+        >Тут будет отображаться ошибка валидации</span>
       </fieldset>
     </AuthPage>
   );

@@ -1,6 +1,6 @@
 // импорт реакт-компонентов
 import React/* , { useState, useEffect, useCallback }  */from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 // импорт стилей
 import './App.css'
@@ -9,37 +9,39 @@ import './App.css'
 
 // импорт компонентов страниц
 import Header from '../Header/Header';
-import LandingPage from '../LandingPage/LandingPage';
+import Main from '../Main/Main';
+import Profile from '../Profile/Profile';
 import Footer from '../Footer/Footer';
 import PageNoFound from '../PageNoFound/PageNoFound';
 
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 
-
+import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
 
 
 function App() {
+
   return (
     <div className="page">
       <Switch>
         <Route exact path="/"> {/* главная */}
-          <Header />
-          <LandingPage />
-          <Footer />
+          <Main />
         </Route>
         <Route path="/movies"> {/* фильмы */}
           <Header />
-
+          <Movies />
           <Footer />
         </Route>
         <Route path="/saved-movies"> {/* сохраненные фильмы */}
           <Header />
-
+          <SavedMovies />
           <Footer />
         </Route>
         <Route path="/profile"> {/* профиль */}
           <Header />
+          <Profile />
         </Route>
         <Route path="/signup"> {/* регистрация */}
           <Register />

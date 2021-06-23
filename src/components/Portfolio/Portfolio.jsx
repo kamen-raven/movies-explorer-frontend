@@ -1,6 +1,8 @@
 // импорт реакт-компонентов
 import React from 'react';
 
+import './Portfolio.css';
+
 function Portfolio(props) {
   return (
     <section className="portfolio container">
@@ -8,25 +10,28 @@ function Portfolio(props) {
         Портфолио
       </h3>
       <div className="portfolio__container">
-        <ul class="list list_place_portfolio">
-          <li class="portfolio__links">
-            <a class="link portfolio__link"
+        <ul className="list list_place_portfolio">
+          <li className="portfolio__links">
+            <a className="link portfolio__link"
               href="https://github.com/kamen-raven/how-to-learn.git"
-              target="_blank">
+              target="_blank"
+              rel="noreferrer">
               Статичный сайт
                 </a>
           </li>
-          <li class="portfolio__links">
-            <a class="link portfolio__link"
+          <li className="portfolio__links">
+            <a className="link portfolio__link"
               href="https://github.com/kamen-raven/russian-travel.git"
-              target="_blank">
+              target="_blank"
+              rel="noreferrer">
               Адаптивный сайт
                 </a>
           </li>
-          <li class="portfolio__links">
-            <a class="link portfolio__link"
+          <li className="portfolio__links">
+            <a className="link portfolio__link"
               href="https://github.com/kamen-raven/react-mesto-api-full.git"
-              target="_blank">
+              target="_blank"
+              rel="noreferrer">
               Одностраничное приложение
             </a>
           </li>

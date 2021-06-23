@@ -2,7 +2,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-
+import './PageNoFound.css';
 
 function PageNoFound(props) {
   const history = useHistory();
@@ -15,7 +15,7 @@ function PageNoFound(props) {
       <p className="page-no-found__info">
         Страница не найдена
       </p>
-      <button className="page-no-found__button link"
+      <button className="page-no-found__button button"
               onClick={() => history.goBack()}>
         Назад
       </button>

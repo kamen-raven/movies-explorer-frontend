@@ -1,0 +1,153 @@
+.navigation {
+  visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    z-index: 2;
+    visibility: hidden;
+  }
+}
+
+
+@media (max-width: 768px) {
+.navigation_is-opened {
+    visibility: visible;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__background {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .3);
+    position: absolute;
+    right: 520px;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__container {
+    max-width: 520px;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__close-button {
+    border: none;
+    background-image: url(../../images/close-menu_button.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    width: 28px;
+    height: 24px;
+    padding-bottom: 24px;
+    margin: 25px 30px 120px auto;
+  }
+}
+
+@media (max-width: 425px) {
+  .navigation__close-button {
+    margin: 20px 20px 100px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__wrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__nav {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__nav-link {
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    color: #000;
+    margin: 0 auto 28px;
+    padding-bottom: 2px;
+  }
+}
+
+@media (max-width: 425px) {
+  .navigation__nav-link  {
+    padding-bottom: 5px;
+    margin: 0 auto 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__nav-link_active {
+    border-bottom: 2px #000 solid
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__profile-link {
+    text-decoration: none;
+    color: #000;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 90px auto;
+    width: 100px;
+    height: 32px;
+    border: 2px solid #AAAAAA;
+    box-sizing: border-box;
+    border-radius: 50px;
+  }
+}
+
+@media (max-width: 425px) {
+  .navigation__profile-button {
+    margin: 45px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__profile-icon {
+    background-image: url(../../images/profile-icon.svg);
+    background-repeat: no-repeat;
+    background-position: left;
+    width: 12px;
+    height: 14px;
+    padding-right: 7px;
+  }
+}

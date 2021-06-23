@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './Footer.css';
+
 function Footer() {
   return (
     <footer className="footer container">
@@ -11,25 +13,28 @@ function Footer() {
           <p className="footer__copyright">
             &#169;&#160;2021
         </p>
-          <ul class="list list_place_footer">
-            <li class="footer__links">
-              <a class="link footer__link"
+          <ul className="list list_place_footer">
+            <li className="footer__links">
+              <a className="link footer__link"
                 href="https://praktikum.yandex.ru/web/"
-                target="_blank">
+                target="_blank"
+                rel="noreferrer">
                 Яндекс.Практикум
             </a>
             </li>
-            <li class="footer__links">
-              <a class="link footer__link"
+            <li className="footer__links">
+              <a className="link footer__link"
                 href="https://github.com/kamen-raven"
-                target="_blank">
+                target="_blank"
+                rel="noreferrer">
                 Github
             </a>
             </li>
-            <li class="footer__links">
-              <a class="link footer__link"
+            <li className="footer__links">
+              <a className="link footer__link"
                 href="https://vk.com/kamen_raven"
-                target="_blank">
+                target="_blank"
+                rel="noreferrer">
                 ВКонтакте
             </a>
             </li>

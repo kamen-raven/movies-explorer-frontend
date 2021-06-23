@@ -1,6 +1,8 @@
 // импорт реакт-компонентов
 import React from 'react';
 
+import './AboutProject.css';
+
 function AboutProject(props) {
   return (
     <section className="about-project container" id="about">

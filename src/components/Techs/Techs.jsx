@@ -1,6 +1,8 @@
 // импорт реакт-компонентов
 import React from 'react';
 
+import './Techs.css';
+
 function Techs(props) {
   return (
     <section className="techs" id="techs">

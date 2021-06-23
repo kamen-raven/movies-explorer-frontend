@@ -3,6 +3,8 @@ import React from 'react';
 
 import photo from "../../images/me.jpg"
 
+import './AboutMe.css';
+
 function AboutMe(props) {
   return (
     <section className="about-me container" id="student">
@@ -26,24 +28,27 @@ function AboutMe(props) {
             С 2017 года работаю в Университете ИТМО.
             В 2020 году заинтересовался разработкой, сейчас оканчиваю курс по веб-разработке от Яндекс.Практикума.
             </p>
-          <ul class="list">
-            <li class="about-me__links">
-              <a class="link about-me__link"
+          <ul className="list">
+            <li className="about-me__links">
+              <a className="link about-me__link"
                 href="https://github.com/kamen-raven"
+                rel="noreferrer"
                 target="_blank">
                 Github
                 </a>
             </li>
-            <li class="about-me__links">
-              <a class="link about-me__link"
+            <li className="about-me__links">
+              <a className="link about-me__link"
                 href="https://vk.com/kamen_raven"
+                rel="noreferrer"
                 target="_blank">
                 ВКонтакте
                 </a>
             </li>
-            <li class="about-me__links">
-              <a class="link about-me__link"
+            <li className="about-me__links">
+              <a className="link about-me__link"
                 href="https://t.me/kamen_raven"
+                rel="noreferrer"
                 target="_blank">
                 Telegram
                 </a>
