@@ -41,6 +41,7 @@ ___
 ___
 
 Домен для бэкенда: **https://api.kamen.movies-explorer.nomoredomains.icu**;
+
 Домен для фронтенда: **https://kamen.movies-explorer.nomoredomains.icu**;
 
-Публичный IP-адрес: **будет позже**.
+Публичный IP-адрес: **130.193.51.107**.
