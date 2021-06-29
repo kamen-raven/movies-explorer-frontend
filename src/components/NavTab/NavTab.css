@@ -1,0 +1,28 @@
+.nav {
+  background-color: #000;
+}
+
+.nav__links {
+  margin: 24px 20px;
+}
+
+@media (max-width: 768px) {
+  .nav__links {
+    margin: 23.5px 12px;
+  }
+}
+
+.nav__link {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  text-decoration-line: underline;
+  color: #fff;
+}
+
+@media (max-width: 425px) {
+  .nav__link {
+    font-size: 11px;
+  }
+}

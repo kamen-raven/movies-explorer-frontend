@@ -1,0 +1,149 @@
+.auth-page {
+  display: flex;
+
+}
+
+.auth-page__container {
+  margin: 70px auto auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 396px;
+}
+
+@media (max-width: 768px) {
+  .auth-page__container {
+    margin: 232px auto auto;
+  }
+}
+
+@media (max-width: 425px) {
+  .auth-page__container {
+    margin: 56px auto auto;
+  }
+}
+
+.auth-page__title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000000;
+  margin: 0 auto 40px 0;
+}
+
+@media (max-width: 425px) {
+  .auth-page__title {
+    text-align: center;
+    margin: 0 30px 80px;
+  }
+}
+
+.auth-page__form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media (max-width: 425px) {
+  .auth-page__form {
+    margin: 0 30px;
+  }
+}
+
+.auth-page__sumbit-button {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #FFFFFF;
+  width: 100%;
+  background: #3456F3;
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  box-sizing: border-box;
+  padding: 14px 0;
+  user-select: none
+}
+
+
+.auth-page__sumbit-button:disabled {
+  pointer-events: none;
+}
+
+@media (max-width: 425px) {
+  .auth-page__sumbit-button {
+    font-size: 12px;
+    line-height: 17px;
+    }
+}
+
+.auth-page__sumbit-button_type_register {
+  margin-top: 134px;
+}
+
+@media (max-width: 425px) {
+  .auth-page__sumbit-button_type_register {
+    margin-top: 220px;
+    }
+}
+
+.auth-page__sumbit-button_type_login {
+  margin-top: 209px;
+}
+
+@media (max-width: 425px) {
+  .auth-page__sumbit-button_type_login {
+    margin-top: 295px;
+    }
+}
+
+.auth-page__caption-text {
+  display: flex;
+  margin: 16px auto 70px;
+}
+
+@media (max-width: 425px) {
+  .auth-page__caption-text {
+    margin-bottom: 14px auto 30px;
+    }
+}
+
+.auth-page__link-text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #A0A0A0;
+  margin: 0;
+}
+
+@media (max-width: 425px) {
+  .auth-page__link-text {
+    font-size: 12px;
+    line-height: 15px;
+    }
+}
+
+.auth-page__link {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #3456F3;
+  text-decoration: none;
+  margin-left: 6px;
+}
+
+@media (max-width: 425px) {
+  .auth-page__link {
+    font-size: 12px;
+    line-height: 15px;
+    margin-left: 7px;
+    }
+}

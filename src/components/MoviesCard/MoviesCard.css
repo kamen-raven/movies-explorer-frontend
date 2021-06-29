@@ -1,0 +1,107 @@
+.card {
+  display: grid;
+  grid-template-rows: 68px 1fr;
+  overflow: hidden;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+.card__info-container {
+  background: #FDFDFD;
+  display: flex;
+  justify-content: space-between;
+  max-width: 364px;
+}
+
+.card__info {
+  max-width: 306px;
+}
+
+@media (max-width: 768px) {
+  .card__info {
+    max-width: 281px;
+  }
+}
+
+@media (max-width: 425px) {
+  .card__info {
+    max-width: 242px;
+  }
+}
+
+.card__title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #000000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 14px 0 9px 14px;
+}
+
+.card__duration {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  color: #A0A0A0;
+  margin: 0 auto 14px 14px;
+}
+
+.card__button {
+  background: #F9F9F9;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 36px;
+
+  margin: 19px 14px;
+  padding: 0;
+}
+
+.card__button_type_save {
+  background-image: url(../../images/save_button.svg);
+}
+
+.card__button_type_save:hover {
+  cursor: pointer;
+  background-image: url(../../images/save_button_active.svg);
+  opacity: .5;
+  transition: background-image .5s ease-in-out;
+}
+
+.card__button_type_save:focus {
+  outline: #3456F3 auto 1px;
+}
+
+.card__button_type_saved {
+  background-image: url(../../images/save_button_active.svg);
+}
+
+.card__button_type_delete {
+  background-image: url(../../images/delete_button.svg);
+}
+
+.card__image-link {
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.card__image-link:focus {
+  outline: none;
+}
+
+.card__image {
+  max-width: 364px;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+.card__image:focus {
+  outline: none;
+}

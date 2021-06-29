@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+Дипломная работа [Яндекс.Практикум](https://praktikum.yandex.ru/).
+---
+Выполнена студентом **Каменевым Вячеславом** на 19-м потоке курса *"Веб-разработчик"*.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+___
 
-## Available Scripts
+Репозиторий для фронтэнда приложения проекта Movie-explorer со следующими маршрутами:
+* по роуту `/` отображается страница «О проекте»;
+* по роуту `/movies` отображается страница «Фильмы»;
+* по роуту `/saved-movies` отображается страница «Сохранённые фильмы»;
+* по роуту `/profile` отображается страница с профилем пользователя;
+* по роутам `/signin` и `/signup` отображаются страницы авторизации и регистрации.
 
-In the project directory, you can run:
+В данном проекте будут реализованы следующие возможности: авторизации и регистрации пользователей, редактирования профиля пользователя, поиск фильмов по базе данных сервиса API ** https://api.nomoreparties.co/beatfilm-movies**, а также возможность сохранения карточек фильмов в "Сохраненные фильмы" пользователя и удаления их оттуда.
 
-### `npm start`
+___
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+В данном проекте реализованы на практике следующие технологии:
+1. HTML:
+    1. Разметка портирована в JSX.
+    2. Разметка семантическая.
+    3. Все классы названы по БЭМ.
+2. CSS:
+    1. Вёрстка на Flex layout и Grid layout.
+    2. Адаптивность под разрешения 1280+px/768px/425px/320px, поломки в промежуточных значениях отсутствуют.
+    3. Шрифты подключены через @font-face.
+    4. Сделана микроанимация кнопок, ссылок и инпутов.
+    5. Использован normalize.сss.
+    6. В разных частях проекта есть переиспользуемые блоки.
+    7. Все изображения оптимизированы — в том числе и .svg.
+3. Стилизацию интерактивных элементов (на этапе реализации верстки) можно посмотреть при помощи добавления соответствующих классовых модификаторов css:
+    1. для компонента **InfoTooltip** - для отображения модального окна с информацией об успешной/неуспешной регистрации - модификатор `popup_opened`;
+    2. для компонента **MoviesCard** - для отображения на карточках фильмов кнопок "Сохранить", статуса "Сохранено" и кнопки "Удалить из сохраненного" - модификаторы `card__button_type_save`, `card__button_type_saved`, `card__button_type_delete` соответственно.
+    3.  для компонента **MoviesCardList** - для отображения кнопки "Ещё" и для отображения информации об отсутствии результатов поиска - модицикаторы `cards__button-more_hidden` и `cards__container_hidden`;
+    4. Инифиализация карточек на страницах `/movies` и `/saved-movies` реализована через временный массив с данными data для отображения примера карточек выдачи поиска;
+    5. для компонента бургер-меню **Navigation** в компоненте **Header** реализовано открытие и закрытие бургер-меню на разрешении экрана 768px и меньше через соответствующий хук состояния useState;
+    6. компонент **Preloader** стилизован под макет проекта;
+4. Выполнение проекта осуществлялось в программе VSCode с применением системы контроля версий Git.
 
-### `npm test`
+___
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Домен для бэкенда: **https://api.kamen.movies-explorer.nomoredomains.icu**;
 
-### `npm run build`
+Домен для фронтенда: **https://kamen.movies-explorer.nomoredomains.icu**;
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Публичный IP-адрес: **130.193.51.107**.

@@ -1,0 +1,114 @@
+.cards {
+  max-width: 1280px;
+  margin: 0 auto;
+
+}
+
+.cards__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.cards__container_hidden {
+  display: none;
+}
+
+.cards__empty-page {
+  margin: 70px 70px 80px;
+  padding: 110px;
+  background-image: url(../../images/beatfilm_logo.svg);
+  background-position: center;
+  background-repeat: space;
+  background-size: contain;
+}
+
+@media (max-width: 768px) {
+  .cards__empty-page {
+    margin: 70px 30px 80px;
+  }
+}
+
+@media (max-width: 425px) {
+  .cards__empty-page {
+    padding: 80px;
+    margin: 70px 10px 80px;
+  }
+}
+
+.cards__empty-info {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 27px;
+  color: #000;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 425px) {
+  .cards__empty-info {
+
+  }
+}
+
+.cards__list {
+  display: grid;
+  max-width: 1140px;
+  width: 100%;
+  margin: 70px auto 30px;
+  grid-template-columns:repeat(auto-fit, 364px);
+  grid-template-rows: repeat(auto-fit, 271px);
+  grid-auto-rows: 271px;
+  gap: 30px 24px;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .cards__list{
+    gap: 36px 30px;
+    grid-template-columns:repeat(auto-fit, 339px);
+    grid-template-rows: repeat(auto-fit, 258px);
+    grid-auto-rows: 258px;
+  }
+}
+
+@media (max-width: 425px) {
+  .cards__list {
+    gap: 16px;
+    grid-template-columns:repeat(auto-fit, 300px);
+    grid-template-rows: repeat(auto-fit, 236px);
+    grid-auto-rows: 236px;
+    margin-top: 40px;
+  }
+}
+
+.cards__button-more {
+  max-width: 1140px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  border: none;
+  background: #F9F9F9;
+  border-radius: 6px;
+  margin: 50px 70px 80px;
+  padding: 11px 0 10px;
+}
+
+@media (max-width: 768px) {
+  .cards__button-more {
+    margin: 50px 30px 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cards__button-more {
+    margin: 50px 10px 80px;
+  }
+}
+
+.cards__button-more_hidden {
+  display: none;
+}
