@@ -14,7 +14,8 @@ function SearchForm(props) {
                 type="search"
                 name="search"
                 placeholder="Фильм"
-                autoComplete="off">
+                autoComplete="off"
+                required>
           </input>
           <button className="button search-form__button"
                   type="submit">
