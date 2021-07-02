@@ -1,24 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import Header from "../Header/Header";
+import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import Footer from "../Footer/Footer";
 
-import './Movies.css';
+import "./Movies.css";
 
 function Movies(props) {
-
-
-
-
   return (
-      <main className="content">
-        <SearchForm />
-        <MoviesCardList
-        />
-      </main>
-  )
+    <main className="content">
+      <SearchForm />
+      <MoviesCardList />
+    </main>
+  );
 }
-
-
 
 export default Movies;

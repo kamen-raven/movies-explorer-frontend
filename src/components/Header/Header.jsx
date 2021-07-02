@@ -1,10 +1,10 @@
 // импорт реакт-компонентов
-import React, { useState } from 'react'
-import { Switch, Route, Link, NavLink } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Switch, Route, Link, NavLink } from 'react-router-dom';
 
 import './Header.css';
 
-import Navigation from '../Navigation/Navigation'
+import Navigation from '../Navigation/Navigation';
 
 function Header(props) {
   const [isNavigationOpen, setNavigationOpen] = useState(false);
