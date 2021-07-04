@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState } from "react";
 import AuthPage from '../AuthPage/AuthPage';
 
 import './Login.css';
 
-function Login(props) {
+function Login({ onLogin }) {
   //начальные значения данных инпутов
+  const initialData = {
+    email: '',
+    password: ''
+  };
+  //стейт данных пользователя
+  const [data, setData] = useState(initialData);
+
+  //обработчик инпута
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setData(data => ({
+      ...data,
+      [name]: value
+    }));
+  }
+
+  //обработчик отправки формы
+  function handleSubmit(event) {
+    event.preventDefault();
+    onLogin(data)
+  }
 
   return (
     <AuthPage name="login"
@@ -12,7 +33,8 @@ function Login(props) {
               buttonText="Войти"
               linkText="Ещё не зарегистрированы?"
               link="Регистрация"
-              patch="/signup">
+              patch="/signup"
+              onSubmit={handleSubmit} >
       <fieldset className="login-page__fieldset">
         <label className="login-page__label"
           htmlFor="input-singup-email">
@@ -23,7 +45,9 @@ function Login(props) {
           type="email"
           name="email"
           autoComplete="off"
-          required />
+          required
+          value={data.email}
+          onChange={handleInputChange} />
         <span className="login-page__input-error"
           id="input-singup-email-error">Тут будет отображаться ошибка валидации
         </span>
@@ -38,7 +62,9 @@ function Login(props) {
           minLength="3"
           maxLength="20"
           autoComplete="off"
-          required />
+          required
+          value={data.password}
+          onChange={handleInputChange} />
         <span className="login-page__input-error"
           id="input-singup-pass-error">Тут будет отображаться ошибка валидации
         </span>

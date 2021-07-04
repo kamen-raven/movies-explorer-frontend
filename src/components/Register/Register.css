@@ -51,6 +51,6 @@
   max-width: 396px;
 }
 
-.register-page__input-error_active {
+.register-page__input-error_visible {
   visibility: hidden;
 }

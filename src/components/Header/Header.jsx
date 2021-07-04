@@ -5,6 +5,7 @@ import { Switch, Route, Link, NavLink } from 'react-router-dom';
 import './Header.css';
 
 import Navigation from '../Navigation/Navigation';
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function Header(props) {
   const [isNavigationOpen, setNavigationOpen] = useState(false);
@@ -47,7 +48,7 @@ function Header(props) {
         </header>
       </Route>
       {/* Страницы с карточками фильмов, сохраненными фильмами и профилем пользователя */}
-      <Route path={['/movies', '/saved-movies', '/profile']}>
+      <ProtectedRoute path={['/movies', '/saved-movies', '/profile']}>
         <header className="header">
           <div className="header__container container">
             <Link
@@ -92,7 +93,7 @@ function Header(props) {
           open={isNavigationOpen}
           setOpen={setNavigationOpen}
           buttonClose={toggleNavigation} />
-      </Route>
+      </ProtectedRoute>
     </Switch>
   )
 }

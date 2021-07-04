@@ -27,7 +27,10 @@ function AuthPage(props) {
             to="/"
             aria-label="logo"
           ></Link>
-          <form className="auth-page__form" name={props.name} noValidate>
+          <form className="auth-page__form"
+                name={props.name}
+                noValidate
+                onSubmit={props.onSubmit} >
             <h2 className="auth-page__title">{props.title}</h2>
             {props.children}
             <button

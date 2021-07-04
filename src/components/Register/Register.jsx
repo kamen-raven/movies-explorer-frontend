@@ -1,17 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthPage from "../AuthPage/AuthPage";
+import { useFormWithValidation } from "../../hooks/useForm";
 
-import './Register.css';
+import "./Register.css";
 
-function Register(props) {
+function Register({ onRegister }) {
+  const { values, handleChange, resetFrom, errors, isValid } =
+    useFormWithValidation();
+  //начальные значения данных инпутов
+  /*   const initialData = {
+    email: '',
+    password: '',
+    username: '',
+  };
+  //стейт данных пользователя
+  const [data, setData] = useState(initialData);
+ */
+  /*   //обработчик инпута
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setData(data => ({
+      ...data,
+      [name]: value
+    }));
+  }
+ */
+  //обработчик отправки формы
+  function handleSubmit(event) {
+    event.preventDefault();
+    onRegister(values);
+  }
 
   return (
-    <AuthPage name="register"
-              title="Добро пожаловать!"
-              buttonText="Зарегистрироваться"
-              linkText="Уже зарегистрированы?"
-              link="Войти"
-              patch="/signin">
+    <AuthPage
+      name="register"
+      title="Добро пожаловать!"
+      buttonText="Зарегистрироваться"
+      linkText="Уже зарегистрированы?"
+      link="Войти"
+      patch="/signin"
+      onSubmit={handleSubmit}
+    >
       <fieldset className="register-page__fieldset">
         <label className="register-page__label" htmlFor="input-singup-username">
           Имя
@@ -23,11 +52,15 @@ function Register(props) {
           name="username"
           autoComplete="off"
           required
+          value={values.username || ""}
+          onChange={handleChange}
         />
         <span
           className="register-page__input-error"
           id="input-singup-username-error"
-        >Тут будет отображаться ошибка валидации</span>
+        >
+          {errors.username || " "}
+        </span>
         <label className="register-page__label" htmlFor="input-singup-email">
           E-mail
         </label>
@@ -38,11 +71,15 @@ function Register(props) {
           name="email"
           autoComplete="off"
           required
+          value={values.email || ""}
+          onChange={handleChange}
         />
         <span
           className="register-page__input-error"
           id="input-singup-email-error"
-        >Тут будет отображаться ошибка валидации</span>
+        >
+          {errors.username || " "}
+        </span>
         <label className="register-page__label" htmlFor="input-singup-pass">
           Пароль
         </label>
@@ -55,11 +92,15 @@ function Register(props) {
           maxLength="20"
           autoComplete="off"
           required
+          value={values.password || ""}
+          onChange={handleChange}
         />
         <span
           className="register-page__input-error"
           id="input-singup-pass-error"
-        >Тут будет отображаться ошибка валидации</span>
+        >
+          {errors.username || " "}
+        </span>
       </fieldset>
     </AuthPage>
   );

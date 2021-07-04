@@ -1,4 +1,7 @@
-const address = 'https://api.kamen.movies-explorer.nomoredomains.icu'; // адрес api
+/* const address = 'https://api.kamen.movies-explorer.nomoredomains.icu'; // адрес api
+
+ */
+const address = 'http://localhost:3000'; // адрес api
 
 // возвращение результата
 function returnRes(res) {
@@ -11,16 +14,15 @@ function returnRes(res) {
 //-------------------ЭКСПОРТ----------------------//
 
 // создание пользователя
-function createUser(email, password, name) {
+function register(email, password, username) {
   return fetch(`${address}/signup`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ email, password, name })
+    body: JSON.stringify({ email, password, username })
   })
-    .then(returnRes);
+    .then(returnRes)
 }
 
 // вход на сайт
@@ -28,12 +30,11 @@ function login(email, password) {
   return fetch(`${address}/signin`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ email, password })
   })
-    .then(returnRes);
+    .then(returnRes)
 }
 
 // проверка токена
@@ -41,12 +42,11 @@ function checkToken(token) {
   return fetch(`${address}/users/me`, {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     },
   })
-    .then(returnRes);
+    .then(returnRes)
 }
 
-export { createUser, login, checkToken };
+export { register, login, checkToken };

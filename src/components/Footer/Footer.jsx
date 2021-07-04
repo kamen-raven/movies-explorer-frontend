@@ -6,7 +6,7 @@ import "./Footer.css";
 function Footer() {
   return (
     <Switch>
-      <Route exact path={['/', '/movies', '/saved-movies', '/profile']}>
+      <Route exact path={['/', '/movies', '/saved-movies']}>
         <footer className="footer container">
           <div className="container">
             <p className="footer__desclimer">

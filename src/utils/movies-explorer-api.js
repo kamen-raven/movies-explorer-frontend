@@ -1,4 +1,4 @@
-const address = 'https://kamen.movies-explorer.nomoredomains.icu'; // адрес
+const address = 'https://api.kamen.movies-explorer.nomoredomains.icu'; // адрес
 
 class Api {
   constructor({ address }) {
