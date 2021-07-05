@@ -4,6 +4,16 @@ import { Route, Redirect } from "react-router-dom";
 import Preloader from '../Preloader/Preloader';
 import './ProtectedRoute.css';
 
+/* const ProtectedRoute = ({ component: Component, ...props }) => {
+  return (
+    <Route>
+      {() =>
+        props.isLoggedIn ? <Component {...props} /> : <Redirect exact to="/" />
+      }
+    </Route>
+  );
+}; */
+
 const ProtectedRoute = ({ isAuthChecking, isLoggedIn, path, children }) => {
   return (
     <Route path={path} exact>
@@ -20,14 +30,3 @@ const ProtectedRoute = ({ isAuthChecking, isLoggedIn, path, children }) => {
 export default ProtectedRoute;
 
 
-/*
-const ProtectedRoute = ({ component: Component, ...props }) => {
-  return (
-    <Route>
-      {() =>
-        props.loggedIn ? <Component {...props} /> : <Redirect exact to="/" />
-      }
-    </Route>
-  );
-};
- */

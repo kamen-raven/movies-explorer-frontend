@@ -69,6 +69,10 @@
   user-select: none
 }
 
+.auth-page__sumbit-button_disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
 
 .auth-page__sumbit-button:disabled {
   pointer-events: none;

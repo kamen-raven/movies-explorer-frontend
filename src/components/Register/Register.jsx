@@ -28,6 +28,7 @@ function Register({ onRegister }) {
   //обработчик отправки формы
   function handleSubmit(event) {
     event.preventDefault();
+    resetFrom();
     onRegister(values);
   }
 
@@ -40,6 +41,7 @@ function Register({ onRegister }) {
       link="Войти"
       patch="/signin"
       onSubmit={handleSubmit}
+      isDisabled={!isValid}
     >
       <fieldset className="register-page__fieldset">
         <label className="register-page__label" htmlFor="input-singup-username">
@@ -59,7 +61,7 @@ function Register({ onRegister }) {
           className="register-page__input-error"
           id="input-singup-username-error"
         >
-          {errors.username || " "}
+          {errors.username ? "Введите имя пользователя" : " "}
         </span>
         <label className="register-page__label" htmlFor="input-singup-email">
           E-mail
@@ -71,6 +73,7 @@ function Register({ onRegister }) {
           name="email"
           autoComplete="off"
           required
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
           value={values.email || ""}
           onChange={handleChange}
         />
@@ -78,7 +81,7 @@ function Register({ onRegister }) {
           className="register-page__input-error"
           id="input-singup-email-error"
         >
-          {errors.username || " "}
+          {errors.email ? "Введите e-mail " : " "}
         </span>
         <label className="register-page__label" htmlFor="input-singup-pass">
           Пароль
@@ -88,7 +91,7 @@ function Register({ onRegister }) {
           id="input-singup-pass"
           type="password"
           name="password"
-          minLength="3"
+          minLength="4"
           maxLength="20"
           autoComplete="off"
           required
@@ -99,7 +102,7 @@ function Register({ onRegister }) {
           className="register-page__input-error"
           id="input-singup-pass-error"
         >
-          {errors.username || " "}
+          {errors.password ? "Введите пароль" : " "}
         </span>
       </fieldset>
     </AuthPage>

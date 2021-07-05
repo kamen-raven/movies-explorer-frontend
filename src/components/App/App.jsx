@@ -10,6 +10,7 @@ import "./App.css";
 import mainApi from "../../utils/movies-explorer-api"; // api сохранения фильмов */
 import * as auth from "../../utils/auth-api"; // api регистрации и авторизации
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 // импорт компонентов страниц
 import Header from "../Header/Header";
@@ -28,22 +29,24 @@ function App() {
   //стейт состояния авторизации на сайте
   const [loggedIn, setLoggedIn] = useState(false);
   //стейт емэйла пользователя при авторизации
-/*   const [email, setEmail] = useState(""); */
+  /*   const [email, setEmail] = useState(""); */
   const history = useHistory();
 
   //обработчик регистрации
   function handleRegister({ email, password, username }) {
-    return auth.register(email, password, username)
+    return auth
+      .register(email, password, username)
       .then((res) => {
         /*         setIsRegistrationSucces(true); //успешное
         setIsInfoTooltipIsOpen(true); */
-        history.push('/signin'); //перенаправление на страницу фильмов после успешной регистрации
+        history.push("/signin"); //перенаправление на страницу фильмов после успешной регистрации
+        return res;
       })
       .catch((error) => {
         /*         setIsInfoTooltipIsOpen(true);
         setIsRegistrationSucces(false); */
         console.log(
-          `Хьюстон, у нас проблема при регистрации пользователя: ${error} - некорректно заполнено одно из полей `
+          `Хьюстон, у нас проблема при регистрации пользователя: ${error}`
         );
       });
   }
@@ -55,7 +58,7 @@ function App() {
       .then((res) => {
         localStorage.setItem("token", res.token); //сохраняем токен в локальное хранилище
         setLoggedIn(true);
-/*         setEmail(email); */
+        /*         setEmail(email); */
         history.push("/movies"); //перенаправление на страницу фильмов
         return res;
       })
@@ -83,7 +86,7 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-/*             setEmail(res.email); //получаем данные емэйла */
+            //          setEmail(res.email); //получаем данные емэйла
             history.push("/movies");
           }
         })
@@ -113,35 +116,50 @@ function App() {
     history.push("/");
   } */
 
+  //стейт-переменная данных пользоваетля
+  const [currentUser, setCurretUser] = useState({});
+
   return (
-    <div className="page">
-      <Header />
-      <Switch>
-        <Route exact path="/">
-          <Main /> {/* главная */}
-        </Route>
-
-        <ProtectedRoute
-          path={["/movies", "/saved-movies", "/profile"]}
-          isAuthChecking={authChecking}
-          isLoggedIn={loggedIn}
-        >
-          <Movies />
-          <SavedMovies />
-          <Profile />
-        </ProtectedRoute>
-
-        <Route path="/signup">
-          <Register onRegister={handleRegister} /> {/* регистрация */}
-        </Route>
-        <Route path="/signin">
-          <Login onLogin={handleLogin} checkToken={checkToken} /> {/* вход */}
-        </Route>
-        <Route path="*">
-          <PageNoFound /> {/* страница 404 */}
-        </Route>
-      </Switch>
-    </div>
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="page">
+        <Header />
+        <Switch>
+          <Route exact path="/">
+            <Main /> {/* главная */}
+          </Route>
+          <Route path="/movies">
+            <Movies/>
+          </Route>
+{/*           <ProtectedRoute
+            path="/movies"
+            component={Movies}
+            isAuthChecking={authChecking}
+            isLoggedIn={loggedIn}
+          /> */}
+          <ProtectedRoute
+            path="/saved-movies"
+            component={SavedMovies}
+            isAuthChecking={authChecking}
+            isLoggedIn={loggedIn}
+          />
+          <ProtectedRoute
+            path="/profile"
+            component={Profile}
+            isAuthChecking={authChecking}
+            isLoggedIn={loggedIn}
+          />
+          <Route path="/signup">
+            <Register onRegister={handleRegister} /> {/* регистрация */}
+          </Route>
+          <Route path="/signin">
+            <Login onLogin={handleLogin} /> {/* вход */}
+          </Route>
+          <Route path="*">
+            <PageNoFound /> {/* страница 404 */}
+          </Route>
+        </Switch>
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 
