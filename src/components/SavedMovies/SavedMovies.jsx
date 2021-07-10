@@ -2,14 +2,14 @@ import React from 'react';
 
 import './SavedMovies.css';
 
-import SearchForm from '../SearchForm/SearchForm';
+import SavedMoviesSearchForm from '../SavedMoviesSearchForm/SavedMoviesSearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
 function SavedMovies(props) {
   return (
       <main className="content">
-        <SearchForm />
+        <SavedMoviesSearchForm />
         <MoviesCardList />
         <Footer />
       </main>

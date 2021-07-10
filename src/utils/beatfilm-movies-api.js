@@ -1,7 +1,7 @@
 const address = 'https://api.nomoreparties.co'; // адрес api
 
 class Api {
-  constructor({ address }) {
+  constructor(address) {
     this._address = address;
   }
 

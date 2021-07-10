@@ -1,32 +1,79 @@
-import React  from "react";
+import React, { useState, useEffect } from "react";
 
-import './Profile.css';
+import "./Profile.css";
+import AuthInfo from "../InfoTooltip/InfoTooltip";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useFormWithValidation } from "../../hooks/useForm";
 
 function Profile(props) {
+  const { values, handleChange, resetFrom, errors, isValid } =
+    useFormWithValidation(); // импорт валидации
+  const currentUser = React.useContext(CurrentUserContext); //подписываемся на контекст данных текущего пользователя
+
+  useEffect(() => {
+    if (currentUser) {
+      resetFrom(currentUser, {}, true);
+    }
+  }, [currentUser, resetFrom]);
+
+  const [isProfileEdit, setIsprofileEdit] = useState(false); //стейт нажатия кнопки Редактировать
+  function handleProfileEditClick() {
+    props.setIsAuthInfoSucces('');
+    props.setIsAuthInfoVisible(false);
+    setIsprofileEdit(true);
+  }
+
+  //обработчик отправки формы
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    props.onUpdateUser({
+      email: values.email,
+      username: values.username
+    });
+    if(props.setIsAuthInfoSucces==='Успех!') {
+      setIsprofileEdit(true);
+    } else {
+      setIsprofileEdit(false);
+    }
+
+
+
+  }
+
   return (
     <div className="page">
       <section className="profile-page">
         <div className="profile-page__container">
-          <form className="profile-page__form" name={props.name} noValidate>
-            <h2 className="profile-page__title">Привет, currentUser.name!</h2>
+          <form
+            className="profile-page__form"
+            name={props.name}
+            noValidate
+            onSubmit={handleSubmit}
+          >
+            <h2 className="profile-page__title">{`Привет, ${currentUser.username}!`}</h2>
             <fieldset className="profile-page__fieldset">
               <label className="profile-page__label" htmlFor="input-name">
                 Имя
               </label>
               <input
-                className="profile-page__input profile-page__input_name"
-                id="input-name"
+                className="profile-page__input profile-page__input_username"
+                id="input-username"
                 type="text"
-                name="name"
-                value="currentUser.name"
+                name="username"
+                value={values.username || ""}
                 autoComplete="off"
                 required
-                readOnly
+                pattern="[\sA-Za-zА-Яа-яЁё-]{2,30}"
+                onChange={handleChange}
+                readOnly={isProfileEdit ? false : true} //разрешаем редактировать после нажатия кнопки Редактирования
               />
               <span
-                className="profile-page__input-error"
+                className="profile-page__input-error profile-page__input-error_type_username"
                 id="input-name-error"
-              ></span>
+              >
+                {errors.username ? "Введите имя пользователя" : " "}
+              </span>
               <label className="profile-page__label" htmlFor="input-email">
                 E-mail
               </label>
@@ -35,30 +82,50 @@ function Profile(props) {
                 id="input-email"
                 type="email"
                 name="email"
-                value="currentUser.email"
+                value={values.email || ""}
                 autoComplete="off"
                 required
-                readOnly
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                onChange={handleChange}
+                readOnly={isProfileEdit ? false : true} //разрешаем редактировать после нажатия кнопки Редактирования
               />
               <span
-                className="profile-page__input-error"
+                className="profile-page__input-error profile-page__input-error_type_email"
                 id="input-email-error"
-              ></span>
+              >
+                {errors.email ? "Введите e-mail " : " "}
+              </span>
             </fieldset>
+            <AuthInfo isOpen={props.isInfoVisible} isSucces={props.isSucces} />
             <button
-              className="button profile-page__button profile-page__button_type_edit profile-page__button_active"
+              className={`button profile-page__button profile-page__button_type_save ${
+                isProfileEdit ? "profile-page__button_active" : " "
+              } ${!isValid && "profile-page__button_disabled"}`}
               type="submit"
+              disabled={values.username===currentUser.username && values.email===currentUser.email}
+            >
+              Сохранить
+            </button>
+          </form>
+          <div
+            className={`profile-page__button-container ${
+              isProfileEdit ? " " : "profile-page__button-container_active"
+            }`}
+          >
+            <button
+              className="button profile-page__button profile-page__button_type_edit"
+              onClick={handleProfileEditClick}
             >
               Редактировать
             </button>
-          </form>
-          <button className="button profile-page__button profile-page__button_type_exit profile-page__button_active">
-            Выйти из аккаунта
-          </button>
-          <button className="button profile-page__button profile-page__button_type_save">
-            Сохранить
-          </button>
+            <button
+              className="button profile-page__button profile-page__button_type_exit"
+              onClick={props.onSignOut}
+            >
+              Выйти из аккаунта
+            </button>
           </div>
+        </div>
       </section>
     </div>
   );

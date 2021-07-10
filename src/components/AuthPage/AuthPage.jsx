@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./AuthPage.css";
 
-import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import AuthInfo from "../InfoTooltip/InfoTooltip";
 
 function AuthPage({
   name,
@@ -15,15 +15,10 @@ function AuthPage({
   onSubmit,
   children,
   isDisabled = false,
+  isAuthInfoVisible,
+  isAuthInfoSucces
 }) {
-  const [isInfoTooltipIsOpen, setIsInfoTooltipIsOpen] = useState(false);
-  const [isRegistrationSucces, setIsRegistrationSucces] = useState(false);
 
-  //закрытие попапов
-  function closeAllPopups() {
-    setIsInfoTooltipIsOpen(false);
-    setIsRegistrationSucces(false); //'чтобы литнер не ругался
-  }
 
   return (
     <div className="page">
@@ -42,11 +37,14 @@ function AuthPage({
           >
             <h2 className="auth-page__title">{title}</h2>
             {children}
+            <AuthInfo
+              isOpen={isAuthInfoVisible}
+              isSucces={isAuthInfoSucces}
+            />
             <button
               className={`button auth-page__sumbit-button
                 auth-page__sumbit-button_type_${name}
-                ${isDisabled && "auth-page__sumbit-button_disabled"
-              }`}
+                ${isDisabled && "auth-page__sumbit-button_disabled"}`}
               type="submit"
               disabled={isDisabled}
             >
@@ -61,13 +59,6 @@ function AuthPage({
           </div>
         </div>
       </section>
-
-      {/* InfoTooltip*/}
-      <InfoTooltip
-        isOpen={isInfoTooltipIsOpen}
-        onClose={closeAllPopups}
-        isSucces={isRegistrationSucces}
-      />
     </div>
   );
 }

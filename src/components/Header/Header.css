@@ -88,6 +88,10 @@
   margin: 0 8px;
 }
 
+.header__nav-link_theme_dark {
+  color: #FFFFFF;
+}
+
 .header__nav-link_active {
   font-weight: 500;
 }
@@ -104,6 +108,10 @@
   border-radius: 50px;
 }
 
+.header__profile-button_theme_dark {
+  border: 2px solid #F5F5F5;
+}
+
 .header__profile-link {
   text-decoration: none;
   color: #000;
@@ -113,6 +121,10 @@
   line-height: 16px;
 }
 
+.header__profile-link_theme_dark {
+  color: #fff;
+}
+
 .header__profile-icon {
   background-image: url(../../images/profile-icon.svg);
   background-repeat: no-repeat;
@@ -120,6 +132,10 @@
   width: 12px;
   height: 14px;
   padding-right: 7px;
+}
+
+.header__profile-icon_theme_dark {
+  background-image: url(../../images/profile-icon_theme_dark.svg);
 }
 
 .header__burger-button {
@@ -151,4 +167,8 @@
     padding: 11px;
     margin: 25px 14px auto 0;
   }
+}
+
+.header__burger-button_theme_dark {
+  background-image: url(../../images/burger-menu_button_theme_dark.svg);
 }

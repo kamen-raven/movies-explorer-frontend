@@ -1,30 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import AuthPage from "../AuthPage/AuthPage";
 import { useFormWithValidation } from "../../hooks/useForm";
 
 import "./Register.css";
 
-function Register({ onRegister }) {
-  const { values, handleChange, resetFrom, errors, isValid } =
-    useFormWithValidation();
-  //начальные значения данных инпутов
-  /*   const initialData = {
-    email: '',
-    password: '',
-    username: '',
-  };
-  //стейт данных пользователя
-  const [data, setData] = useState(initialData);
- */
-  /*   //обработчик инпута
-  function handleInputChange(event) {
-    const { name, value } = event.target;
-    setData(data => ({
-      ...data,
-      [name]: value
-    }));
-  }
- */
+function Register({ onRegister, isInfoVisible, isAuthSucces }) {
+  const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
+
   //обработчик отправки формы
   function handleSubmit(event) {
     event.preventDefault();
@@ -42,6 +24,8 @@ function Register({ onRegister }) {
       patch="/signin"
       onSubmit={handleSubmit}
       isDisabled={!isValid}
+      isAuthInfoVisible={isInfoVisible}
+      isAuthInfoSucces={isAuthSucces}
     >
       <fieldset className="register-page__fieldset">
         <label className="register-page__label" htmlFor="input-singup-username">
@@ -52,8 +36,11 @@ function Register({ onRegister }) {
           id="input-singup-username"
           type="text"
           name="username"
+          minLength="2"
+          maxLength="30"
           autoComplete="off"
           required
+          pattern="[\sA-Za-zА-Яа-яЁё-]{2,30}"
           value={values.username || ""}
           onChange={handleChange}
         />
@@ -91,10 +78,10 @@ function Register({ onRegister }) {
           id="input-singup-pass"
           type="password"
           name="password"
-          minLength="4"
-          maxLength="20"
+          minLength="8"
           autoComplete="off"
           required
+          pattern="[\s0-9A-Za-zА-Яа-яЁё!?_\-@#$%^&.,*/]{8,}"
           value={values.password || ""}
           onChange={handleChange}
         />
@@ -102,7 +89,7 @@ function Register({ onRegister }) {
           className="register-page__input-error"
           id="input-singup-pass-error"
         >
-          {errors.password ? "Введите пароль" : " "}
+          {errors.password ? "Пароль должен содержать не менее 8 символов" : " "}
         </span>
       </fieldset>
     </AuthPage>

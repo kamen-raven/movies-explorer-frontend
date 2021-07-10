@@ -45,3 +45,5 @@ ___
 Домен для фронтенда: **https://kamen.movies-explorer.nomoredomains.icu**;
 
 Публичный IP-адрес: **130.193.51.107**.
+
+

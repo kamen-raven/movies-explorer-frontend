@@ -1,7 +1,9 @@
-const address = 'https://api.kamen.movies-explorer.nomoredomains.icu'; // адрес
+/* const address = 'https://api.kamen.movies-explorer.nomoredomains.icu'; // адрес
+ */
 
+const address = 'http://localhost:3000'; // адрес api
 class Api {
-  constructor({ address }) {
+  constructor(address) {
     this._address = address;
   }
 
@@ -35,7 +37,7 @@ class Api {
       },
       body: JSON.stringify({
         email: data.email,
-        name: data.name
+        username: data.username
       })
     })
       .then(this._returnRes)

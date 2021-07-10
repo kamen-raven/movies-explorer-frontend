@@ -4,25 +4,17 @@ import { Route, Redirect } from "react-router-dom";
 import Preloader from '../Preloader/Preloader';
 import './ProtectedRoute.css';
 
-/* const ProtectedRoute = ({ component: Component, ...props }) => {
-  return (
-    <Route>
-      {() =>
-        props.isLoggedIn ? <Component {...props} /> : <Redirect exact to="/" />
-      }
-    </Route>
-  );
-}; */
+const ProtectedRoute = ({ component: Component, ...props }) => {
+  const isLoggedIn =  props.loggedIn || localStorage.getItem('token');
 
-const ProtectedRoute = ({ isAuthChecking, isLoggedIn, path, children }) => {
   return (
-    <Route path={path} exact>
-      { isAuthChecking ? (
-        <main className='content'>
+    <Route path={props.path} exact>
+      { props.isAuthChecking ? (
+        <main className='protected-route'>
           <Preloader />
         </main>
       ) : (
-        isLoggedIn ? children : <Redirect exact to="/" />
+        isLoggedIn ?  <Component {...props} />  : <Redirect exact to="/" />
       )}
     </Route>
 )}

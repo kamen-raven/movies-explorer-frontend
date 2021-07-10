@@ -60,21 +60,21 @@
   grid-template-columns: 1fr minmax(360px, 1fr);
   border: none;
   padding: 0;
-  margin: 0 auto 220px;
+  margin: 0 auto 70px;
   max-width: 410px;
 
 }
 
 @media (max-width: 768px) {
   .profile-page__fieldset {
-    margin-bottom: 210px;
+    margin-bottom: 60px;
 
   }
 }
 
 @media (max-width: 425px) {
   .profile-page__fieldset {
-    margin-bottom: 380px;
+    margin-bottom: 230px;
     max-width: 260px;
     grid-template-columns: 1fr minmax(220px, 1fr);
   }
@@ -120,6 +120,15 @@
   outline-style: none;
 }
 
+.profile-page__button-container {
+  display: none;
+  margin-top: 100px;
+}
+
+.profile-page__button-container_active {
+  display: block;
+}
+
 
 .profile-page__button {
   display: none;
@@ -133,16 +142,13 @@
   padding: 0;
 }
 
-
-.profile-page__button:disabled {
-pointer-events: none;
-}
-
 .profile-page__button_type_edit {
+  display: block;
   margin: 0 auto 16px;
 }
 
 .profile-page__button_type_exit {
+  display: block;
   font-weight: 500;
   color: #FF3055;
   margin: 0 auto 40px;
@@ -162,8 +168,20 @@ pointer-events: none;
   box-shadow: none;
   box-sizing: border-box;
   padding: 14px 0;
-  margin: 0 auto 40px;
+  margin: 100px auto 40px;
   user-select: none
+}
+
+.profile-page__button:disabled {
+  pointer-events: none;
+  color: #C2C2C2;
+  background: #F8F8F8;
+}
+
+.profile-page__button_disabled {
+  color: #C2C2C2;
+  background: #F8F8F8;
+  pointer-events: none;
 }
 
 
@@ -187,14 +205,46 @@ pointer-events: none;
   color: #FF3055;
   margin: 0;
   position: absolute;
-  opacity: 0;
+
+  opacity: 1;
   transition: all .3s ease 0;
   max-width: 410px;
 }
 
-
-.profile-page__input-error_active {
-  opacity: 1;
+.profile-page__input-error_type_username {
+  right: 0;
+  top: 165px;
 }
 
+@media (max-width: 768px) {
+  .profile-page__input-error_type_username {
+    right: 0;
+    top: 138px;
+    }
+}
 
+@media (max-width: 425px) {
+  .profile-page__input-error_type_username {
+    right: 0;
+    top: 123px;
+    }
+}
+
+.profile-page__input-error_type_email {
+  right: 0;
+  top: 188px;
+}
+
+@media (max-width: 768px) {
+  .profile-page__input-error_type_email {
+    right: 0;
+    top: 160px;
+    }
+}
+
+@media (max-width: 425px) {
+  .profile-page__input-error_type_email {
+    right: 0;
+    top: 143px;
+    }
+}
