@@ -16,11 +16,11 @@ function Profile(props) {
     }
   }, [currentUser, resetFrom]);
 
-  const [isProfileEdit, setIsprofileEdit] = useState(false); //стейт нажатия кнопки Редактировать
-  function handleProfileEditClick() {
+  //const [isProfileEdit, setIsprofileEdit] = useState(false); //стейт нажатия кнопки Редактировать
+  function handleProfileEditClick() {  //обработчик клика кнопки Редактировать
     props.setIsAuthInfoSucces('');
     props.setIsAuthInfoVisible(false);
-    setIsprofileEdit(true);
+    props.setIsprofileEdit(true);
   }
 
   //обработчик отправки формы
@@ -31,11 +31,11 @@ function Profile(props) {
       email: values.email,
       username: values.username
     });
-    if(props.setIsAuthInfoSucces==='Успех!') {
+/*     if(props.setIsAuthInfoSucces==='Успех!') {
       setIsprofileEdit(true);
     } else {
       setIsprofileEdit(false);
-    }
+    } */
 
 
 
@@ -66,7 +66,7 @@ function Profile(props) {
                 required
                 pattern="[\sA-Za-zА-Яа-яЁё-]{2,30}"
                 onChange={handleChange}
-                readOnly={isProfileEdit ? false : true} //разрешаем редактировать после нажатия кнопки Редактирования
+                readOnly={props.isProfileEdit ? false : true} //разрешаем редактировать после нажатия кнопки Редактирования
               />
               <span
                 className="profile-page__input-error profile-page__input-error_type_username"
@@ -87,7 +87,7 @@ function Profile(props) {
                 required
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                 onChange={handleChange}
-                readOnly={isProfileEdit ? false : true} //разрешаем редактировать после нажатия кнопки Редактирования
+                readOnly={props.isProfileEdit ? false : true} //разрешаем редактировать после нажатия кнопки Редактирования
               />
               <span
                 className="profile-page__input-error profile-page__input-error_type_email"
@@ -99,7 +99,7 @@ function Profile(props) {
             <AuthInfo isOpen={props.isInfoVisible} isSucces={props.isSucces} />
             <button
               className={`button profile-page__button profile-page__button_type_save ${
-                isProfileEdit ? "profile-page__button_active" : " "
+                props.isProfileEdit ? "profile-page__button_active" : " "
               } ${!isValid && "profile-page__button_disabled"}`}
               type="submit"
               disabled={values.username===currentUser.username && values.email===currentUser.email}
@@ -109,7 +109,7 @@ function Profile(props) {
           </form>
           <div
             className={`profile-page__button-container ${
-              isProfileEdit ? " " : "profile-page__button-container_active"
+              props.isProfileEdit ? " " : "profile-page__button-container_active"
             }`}
           >
             <button

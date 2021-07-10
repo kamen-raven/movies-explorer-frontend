@@ -146,6 +146,17 @@ function App() {
     }
   }, [loggedIn]);
 
+
+
+
+
+  const [isProfileEdit, setIsprofileEdit] = useState(false); //стейт нажатия кнопки Редактировать
+
+
+
+
+
+
   //изменение данных пользователя
   function handleUpdateUser(data) {
     mainApi.editUserInfo(data)
@@ -153,13 +164,16 @@ function App() {
         setCurretUser(res);
         setIsAuthInfoSucces('Успех!');
         setIsAuthInfoVisible(true); //успешное
+        setIsprofileEdit(false)
       })
 /*       .then(() => {
-        setIsAuthInfoSucces('');
-        setIsAuthInfoVisible(false);
+
+        //setIsAuthInfoSucces('');
+        //setIsAuthInfoVisible(false);
       }) */
       .catch((error) => {
         setIsAuthInfoVisible(true); //неуспешное
+        setIsprofileEdit(true);
         if (error === "Ошибка 409") {
           setIsAuthInfoSucces("Пользователь с указанной почтой уже существует");
           console.log(
@@ -210,6 +224,8 @@ function App() {
             onUpdateUser={handleUpdateUser}
             setIsAuthInfoSucces={setIsAuthInfoSucces}
             setIsAuthInfoVisible={setIsAuthInfoVisible}
+            isProfileEdit={isProfileEdit}
+            setIsprofileEdit={setIsprofileEdit}
           />
           <Route path="/signup">
             <Register onRegister={handleRegister}
