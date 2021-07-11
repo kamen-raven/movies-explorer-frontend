@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import "./Profile.css";
 import AuthInfo from "../InfoTooltip/InfoTooltip";
@@ -10,35 +10,25 @@ function Profile(props) {
     useFormWithValidation(); // импорт валидации
   const currentUser = React.useContext(CurrentUserContext); //подписываемся на контекст данных текущего пользователя
 
+  // задавание данных пользователя в инпуты
   useEffect(() => {
     if (currentUser) {
       resetFrom(currentUser, {}, true);
     }
   }, [currentUser, resetFrom]);
 
-  //const [isProfileEdit, setIsprofileEdit] = useState(false); //стейт нажатия кнопки Редактировать
-  function handleProfileEditClick() {  //обработчик клика кнопки Редактировать
-    props.setIsAuthInfoSucces('');
-    props.setIsAuthInfoVisible(false);
-    props.setIsprofileEdit(true);
+//обработчик клика кнопки Редактировать
+  function handleProfileEditClick() {
+    props.setIsProfileEdit(true);
   }
 
   //обработчик отправки формы
   function handleSubmit(event) {
     event.preventDefault();
-
     props.onUpdateUser({
       email: values.email,
       username: values.username
-    });
-/*     if(props.setIsAuthInfoSucces==='Успех!') {
-      setIsprofileEdit(true);
-    } else {
-      setIsprofileEdit(false);
-    } */
-
-
-
+    })
   }
 
   return (

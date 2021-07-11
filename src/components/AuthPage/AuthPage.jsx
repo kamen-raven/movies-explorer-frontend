@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import "./AuthPage.css";
@@ -15,8 +15,8 @@ function AuthPage({
   onSubmit,
   children,
   isDisabled = false,
-  isAuthInfoVisible,
-  isAuthInfoSucces
+  isInfoVisible,
+  isInfoSucces
 }) {
 
 
@@ -38,8 +38,8 @@ function AuthPage({
             <h2 className="auth-page__title">{title}</h2>
             {children}
             <AuthInfo
-              isOpen={isAuthInfoVisible}
-              isSucces={isAuthInfoSucces}
+              isOpen={isInfoVisible}
+              isSucces={isInfoSucces}
             />
             <button
               className={`button auth-page__sumbit-button

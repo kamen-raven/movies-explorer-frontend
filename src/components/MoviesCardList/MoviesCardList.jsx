@@ -25,7 +25,7 @@ function MoviesCardList(props) {
         </div>
         <button className="button cards__button-more">Ещё</button>
       </div>
-      <div className="cards__container cards__empty-page cards__container_hidden">
+      <div className="cards__container cards__empty-page ">
         <h3 className="cards__empty-info">Ищите и найдёте</h3>
       </div>
     </section>

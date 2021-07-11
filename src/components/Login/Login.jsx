@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AuthPage from "../AuthPage/AuthPage";
 import { useFormWithValidation } from "../../hooks/useForm";
 
@@ -24,8 +24,8 @@ function Login({ onLogin, isInfoVisible, isAuthSucces }) {
       patch="/signup"
       onSubmit={handleSubmit}
       isDisabled={!isValid}
-      isAuthInfoVisible={isInfoVisible}
-      isAuthInfoSucces={isAuthSucces}
+      isInfoVisible={isInfoVisible}
+      isInfoSucces={isAuthSucces}
     >
       <fieldset className="login-page__fieldset">
         <label className="login-page__label" htmlFor="input-singup-email">

@@ -24,8 +24,8 @@ function Register({ onRegister, isInfoVisible, isAuthSucces }) {
       patch="/signin"
       onSubmit={handleSubmit}
       isDisabled={!isValid}
-      isAuthInfoVisible={isInfoVisible}
-      isAuthInfoSucces={isAuthSucces}
+      isInfoVisible={isInfoVisible}
+      isInfoSucces={isAuthSucces}
     >
       <fieldset className="register-page__fieldset">
         <label className="register-page__label" htmlFor="input-singup-username">

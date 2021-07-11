@@ -1,6 +1,6 @@
 // импорт реакт-компонентов
 import React, { useState, useEffect, useCallback } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
 // импорт стилей
 import "./App.css";
@@ -28,70 +28,73 @@ function App() {
   //-----------------РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ НА САЙТЕ
   const [loggedIn, setLoggedIn] = useState(false); //стейт состояния авторизации на сайте
   const [currentUser, setCurretUser] = useState({}); //стейт-переменная данных пользоваетля
-  const [isAuthInfoVisible, setIsAuthInfoVisible] = useState(false);
-  const [isAuthInfoSucces, setIsAuthInfoSucces] = useState('');
+  const [isInfoVisible, setIsInfoVisible] = useState(false); //стейт-переменная отображения информации при работе с формами
+  const [isInfoSucces, setIsInfoSucces] = useState(""); // стейт сообщения об ошибки
   const history = useHistory();
+  const location = useLocation();
+
+  //----------------------РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ И ВЫХОД-----------------------//
+  // обновление данных стейта отображения ошибки при регистрации, авторизации
+  useEffect(() => {
+    if (location.pathname === "/signup" || "/signin") {
+      setIsInfoSucces("");
+      setIsInfoVisible(false);
+    }
+  }, [location.pathname]);
 
   //обработчик регистрации
   function handleRegister({ email, password, username }) {
-    return auth.register(email, password, username)
+    return auth
+      .register(email, password, username)
       .then((res) => {
         localStorage.setItem("token", res.token); //сохраняем токен в локальное хранилище
-        //setCurretUser({ email, username }); //задаем данные текущего пользователя
         handleLogin({ email, password }); //производим авторизацию сразу после регистрации
-        setIsAuthInfoSucces('Успех!');
-        setIsAuthInfoVisible(true); //успешное
+        setIsInfoSucces("Успех!");
+        setIsInfoVisible(true); //успешное
         return res;
       })
       .catch((error) => {
-        setIsAuthInfoVisible(true); //неуспешное
+        setIsInfoVisible(true); //неуспешное
         if (error === "ошибка 409") {
-          setIsAuthInfoSucces("Пользователь с указанной почтой уже существует");
+          setIsInfoSucces("Пользователь с указанной почтой уже существует");
           console.log(
             `Хьюстон, у нас проблема при регистрации пользователя: ${error} - пользователь с указанной почтой уже существует`
           );
         } else {
-          setIsAuthInfoSucces("Что-то пошло не так! Попробуйте ещё раз..")
+          setIsInfoSucces("Что-то пошло не так! Попробуйте ещё раз..");
           console.log(
             `Хьюстон, у нас проблема при регистрации пользователя: ${error} `
           );
         }
-      })
-      .finally(() => {
-/*         setIsAuthInfoSucces('');
-        setIsAuthInfoVisible(false); */
-      })
+      });
   }
 
   //обработчик авторизации
   function handleLogin({ email, password }) {
-    return auth.login(email, password)
+    return auth
+      .login(email, password)
       .then((res) => {
         localStorage.setItem("token", res.token); //сохраняем токен в локальное хранилище
         setLoggedIn(true);
-        setIsAuthInfoSucces('Успех!');
-        setIsAuthInfoVisible(true);
+        setIsInfoSucces("Успех!");
+        setIsInfoVisible(true);
         history.push("/movies"); //перенаправление на страницу фильмов
         return res;
       })
       .catch((error) => {
-        setIsAuthInfoVisible(true);
+        setIsInfoVisible(true);
         if (error === "ошибка 400") {
-          setIsAuthInfoSucces("Что-то пошло не так! Попробуйте ещё раз.."); //неуспешное
+          setIsInfoSucces("Что-то пошло не так! Попробуйте ещё раз.."); //неуспешное
           console.log(
             `Хьюстон, у нас проблема при авторизации пользователя: ${error} - не передано одно из полей`
           );
         } else {
-          setIsAuthInfoSucces("Неверный ввод почты или пароля")
+          setIsInfoSucces("Неверный ввод почты или пароля");
           console.log(
             `Хьюстон, у нас проблема при авторизации пользователя: ${error} - пользователь с указанной почтой и паролем не найден`
           );
         }
-      })
-      .finally(() => {
-/*       setIsAuthInfoSucces('');
-      setIsAuthInfoVisible(false); */
-    })
+      });
   }
 
   //проверка токена пользователя при повторном входе на сайт
@@ -100,7 +103,8 @@ function App() {
     const token = localStorage.getItem("token");
     if (token) {
       setAuthChecking(true);
-      auth.checkToken(token)
+      auth
+        .checkToken(token)
         .then((res) => {
           setLoggedIn(true);
           //setCurretUser(res);
@@ -131,114 +135,118 @@ function App() {
   }
 
   //--------------СТРАНИЦА ФИЛЬМОВ-------------//
+
+  //задавание стейта текущего пользователя
   useEffect(() => {
     if (loggedIn) {
-      mainApi.getCurrentUser()
-      .then((res) => {
-        setCurretUser(res);  //отрисовка данных пользователя
-
-      })
-      .catch((error) => {
-        console.log(`Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`)
-      })
+      mainApi
+        .getCurrentUser()
+        .then((res) => {
+          setCurretUser(res); //отрисовка данных пользователя
+        })
+        .catch((error) => {
+          console.log(
+            `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
+          );
+        });
     } else {
-      setCurretUser({})
+      setCurretUser({});
     }
   }, [loggedIn]);
 
-
-
-
-
-  const [isProfileEdit, setIsprofileEdit] = useState(false); //стейт нажатия кнопки Редактировать
-
-
-
-
-
+  //---------РЕДАКТИРОВАНИЕ ПРОФИЛЯ----------------//
+  const [isProfileEdit, setIsProfileEdit] = useState(false); //стейт нажатия кнопки Редактировать
+  // обновление данных стейта отображения ошибки при редактировании профиля
+  useEffect(() => {
+    if (location.pathname === "/profile") {
+      setIsInfoSucces("");
+      setIsInfoVisible(false);
+      setIsProfileEdit(false);
+    }
+  }, [location.pathname]);
 
   //изменение данных пользователя
   function handleUpdateUser(data) {
-    mainApi.editUserInfo(data)
+    mainApi
+      .editUserInfo(data)
       .then((res) => {
         setCurretUser(res);
-        setIsAuthInfoSucces('Успех!');
-        setIsAuthInfoVisible(true); //успешное
-        setIsprofileEdit(false)
+        setIsInfoSucces("Успех!");
+        setIsInfoVisible(true); //успешное
+        setIsProfileEdit(false);
       })
-/*       .then(() => {
-
-        //setIsAuthInfoSucces('');
-        //setIsAuthInfoVisible(false);
-      }) */
       .catch((error) => {
-        setIsAuthInfoVisible(true); //неуспешное
-        setIsprofileEdit(true);
+        setIsInfoVisible(true); //неуспешное
+        setIsProfileEdit(true);
         if (error === "Ошибка 409") {
-          setIsAuthInfoSucces("Пользователь с указанной почтой уже существует");
+          setIsInfoSucces("Пользователь с указанной почтой уже существует");
           console.log(
             `Хьюстон, у нас проблема при обновлении информации пользователя: ${error} - пользователь с указанной почтой уже существует`
           );
         } else {
-          setIsAuthInfoSucces("Что-то пошло не так! Попробуйте ещё раз..")
+          setIsInfoSucces("Что-то пошло не так! Попробуйте ещё раз..");
           console.log(
             `Хьюстон, у нас проблема при обновлении информации пользователя: ${error} `
           );
         }
-      })
-      .finally(() => {
-/*       setIsAuthInfoSucces('');
-      setIsAuthInfoVisible(false); */
-      })
+      });
   }
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header isLogged={loggedIn} />
         <Switch>
+          {/* главная */}
           <Route exact path="/">
-            <Main /> {/* главная */}
+            <Main />
           </Route>
+          {/* фильмы */}
           <ProtectedRoute
             path="/movies"
             component={Movies}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
           />
+          {/* сохраненные фильмы */}
           <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
           />
+          {/* профиль */}
           <ProtectedRoute
             path="/profile"
             component={Profile}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
             onSignOut={handleSignout}
-            isInfoVisible={isAuthInfoVisible}
-            isSucces={isAuthInfoSucces}
+            isInfoVisible={isInfoVisible}
+            isSucces={isInfoSucces}
             onUpdateUser={handleUpdateUser}
-            setIsAuthInfoSucces={setIsAuthInfoSucces}
-            setIsAuthInfoVisible={setIsAuthInfoVisible}
             isProfileEdit={isProfileEdit}
-            setIsprofileEdit={setIsprofileEdit}
+            setIsProfileEdit={setIsProfileEdit}
           />
+          {/* регистрация */}
           <Route path="/signup">
-            <Register onRegister={handleRegister}
-                      isInfoVisible={isAuthInfoVisible}
-                      isAuthSucces={isAuthInfoSucces}  /> {/* регистрация */}
+            <Register
+              onRegister={handleRegister}
+              isInfoVisible={isInfoVisible}
+              isAuthSucces={isInfoSucces}
+            />
           </Route>
+          {/* вход */}
           <Route path="/signin">
-            <Login onLogin={handleLogin}
-                  isInfoVisible={isAuthInfoVisible}
-                  isAuthSucces={isAuthInfoSucces}  /> {/* вход */}
+            <Login
+              onLogin={handleLogin}
+              isInfoVisible={isInfoVisible}
+              isAuthSucces={isInfoSucces}
+            />
           </Route>
+          {/* страница 404 */}
           <Route path="*">
-            <PageNoFound /> {/* страница 404 */}
+            <PageNoFound />
           </Route>
         </Switch>
       </div>
