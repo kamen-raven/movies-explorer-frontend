@@ -36,10 +36,6 @@
   border-bottom: 1px solid #3456F3;
 }
 
-.login-page__input_error {
-  color: #FF3055;
-}
-
 .login-page__input-error {
   font-family: Inter;
   font-style: normal;
@@ -55,8 +51,4 @@
   transition: all .3s ease 0;
   max-width: 396px;
   z-index: 0;
-}
-
-.login-page__input-error_active {
-  opacity: 1;
 }

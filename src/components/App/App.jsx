@@ -10,6 +10,7 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Profile from "../Profile/Profile";
 import PageNoFound from "../PageNoFound/PageNoFound";
+import Footer from "../Footer/Footer";
 
 import Register from "../Register/Register";
 import Login from "../Login/Login";
@@ -18,9 +19,9 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 
 //импорт вспомогательных компонентов
-import beatfilmMoviesApi from "../../utils/beatfilm-movies-api"; // api получения данных фильмов
-import mainApi from "../../utils/movies-explorer-api"; // api сохранения фильмов
-import * as auth from "../../utils/auth-api"; // api регистрации и авторизации
+import beatfilmMoviesApi from "../../api/beatfilm-movies-api"; // api получения данных фильмов
+import mainApi from "../../api/movies-explorer-api"; // api сохранения фильмов
+import * as auth from "../../api/auth-api"; // api регистрации и авторизации
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
@@ -111,6 +112,7 @@ function App() {
         })
         .catch((error) => {
           localStorage.removeItem("token"); //если токен некорректный - очищаем локальное хранилище
+          sessionStorage.clear();
           history.push("/"); //если токена нет - перенаправляем на главную
           console.log(
             `Хьюстон, у нас проблема при проверке токена пользователя: ${error} - токен не передан или переданный токен некорректен `
@@ -130,11 +132,10 @@ function App() {
   //выход из профиля
   function handleSignout() {
     localStorage.removeItem("token"); //удаляем токен из локального хранилища
+    localStorage.removeItem("BeatFilm-movie");
     setLoggedIn(false);
     history.push("/");
   }
-
-  //--------------СТРАНИЦА ФИЛЬМОВ-------------//
 
   //задавание стейта текущего пользователя
   useEffect(() => {
@@ -192,10 +193,114 @@ function App() {
       });
   }
 
+  //--------------СТРАНИЦА ФИЛЬМОВ-------------//
+  const [allMovies, setAllMovies] = useState([]); //стейт массива всех фильмов
+
+  const [searchQuery, setSearchQuery] = useState(""); //стейт строки поискового запроса
+  const [searchError, setSearchError] = useState(""); //стейт текста ошибки запроса поиска
+  const [filterMoviesCards, setFilterMoviesCards] = useState([]); //стейт массива найденных карточек
+
+  const [isLoading, setIsLoading] = useState(false); //стейт загрузки данных
+
+  //функция получения первоначального списка фильмов и сохранения его в локальное хранилище
+  function getBeatfilmMoviesList() {
+    setIsLoading(true);
+    return beatfilmMoviesApi
+      .getBeatfilmMovies()
+      .then((res) => {
+        localStorage.setItem("BeatFilm-movie", JSON.stringify(res));
+      })
+      .then((res) => {
+        setAllMovies(JSON.parse(localStorage.getItem("BeatFilm-movie")));
+      })
+      .catch((error) => {
+        localStorage.removeItem("BeatFilm-movie");
+        setSearchError(
+          "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
+        );
+        console.log(
+          `Хьюстон, у нас проблема при получении списка фильмов: ${error}`
+        );
+      })
+      .finally(() => setIsLoading(false));
+  }
+
+  // эффект добавления стейта изначальных карточек фильмов
+  useEffect(() => {
+    if (localStorage.getItem("BeatFilm-movie")) {
+      setAllMovies(JSON.parse(localStorage.getItem("BeatFilm-movie")));
+      console.log("обновили стейт allMovies");
+    }
+  }, []);
+
+
+  //функция поиска фильмов
+  function searchMovies(items) {
+    return items.filter((item) => {
+      if (searchQuery === "") {
+        setSearchError("Нужно ввести ключевое слово");
+        return searchError;
+      } else {
+        setSearchError("");
+        return item.nameRU
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()); /* ||
+          item.nameEN === null
+          ? setSearchError("Нужно ввести ключевое слово")
+          : item.nameEN.toLowerCase().includes(searchQuery.toLowerCase())); */
+      }
+    });
+  }
+
+  //проверка на наличие информации о всех фильмах в локальном хранилище
+  function checkAllMoviesLocalStorage() {
+    const allMovies = JSON.parse(localStorage.getItem("BeatFilm-movie"));
+    if (allMovies === null) {
+      getBeatfilmMoviesList();
+      console.log("получили фильмы");
+    } else {
+      setAllMovies(allMovies);
+    }
+  }
+
+  // проверка результатов поиска
+  function checkSearchAnswerNotEmpty() {
+    const foundMovies = searchMovies(allMovies); //делаем поиск по массиву всех фильмов из LS
+   // sessionStorage.setItem("Filter-cards", JSON.stringify(foundMovies));
+    if (foundMovies.length === 0) { //если ничего не найдено
+      setIsLoading(true);
+      setFilterMoviesCards([]); //то в фильтрованный стейт ничего не передается
+      setIsLoading(false);
+      sessionStorage.removeItem("Search-query");
+      sessionStorage.removeItem("Filter-cards");
+      return setSearchError("Ничего не найдено");
+    } else {
+      sessionStorage.setItem("Search-query", searchQuery);
+      setFilterMoviesCards(foundMovies);
+        }
+        sessionStorage.setItem("Filter-cards", JSON.stringify(foundMovies));
+      }
+
+  //обработчик отправки формы поиска
+  function handleSearchFormSumbit(event) {
+    event.preventDefault();
+    if (searchQuery === "") {
+      setFilterMoviesCards([]);
+      setSearchError("Нужно ввести ключевое слово");
+      return searchError;
+    } else {
+      checkAllMoviesLocalStorage();
+      checkSearchAnswerNotEmpty();
+    }
+  }
+
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header isLogged={loggedIn} />
+        <Header isLogged={loggedIn}
+                setIsLogged={setLoggedIn} />
         <Switch>
           {/* главная */}
           <Route exact path="/">
@@ -207,6 +312,13 @@ function App() {
             component={Movies}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
+            handleFormSubmit={handleSearchFormSumbit}
+            errorMessage={searchError}
+            valueSearchMovies={searchQuery}
+            setValueSearchMovies={setSearchQuery}
+            searchedCards={filterMoviesCards}
+            setSearchedCards={setFilterMoviesCards}
+            isLoading={isLoading}
           />
           {/* сохраненные фильмы */}
           <ProtectedRoute
@@ -228,6 +340,7 @@ function App() {
             isProfileEdit={isProfileEdit}
             setIsProfileEdit={setIsProfileEdit}
           />
+
           {/* регистрация */}
           <Route path="/signup">
             <Register
@@ -249,6 +362,7 @@ function App() {
             <PageNoFound />
           </Route>
         </Switch>
+        <Footer />
       </div>
     </CurrentUserContext.Provider>
   );

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./AuthPage.css";
 
-import AuthInfo from "../InfoTooltip/InfoTooltip";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 function AuthPage({
   name,
@@ -37,7 +37,7 @@ function AuthPage({
           >
             <h2 className="auth-page__title">{title}</h2>
             {children}
-            <AuthInfo
+            <InfoTooltip
               isOpen={isInfoVisible}
               isSucces={isInfoSucces}
             />

@@ -17,7 +17,6 @@ class Api {
     return fetch(`${this._address}/beatfilm-movies`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
         "Content-Type": "application/json"
       }
     })

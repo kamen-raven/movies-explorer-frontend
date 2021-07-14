@@ -1,50 +1,31 @@
 import React from "react";
 
 import "./SearchForm.css";
-import { useFormWithValidation } from "../../hooks/useForm";
-
-import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
 function SearchForm(props) {
-  const { values, handleChange, resetFrom, errors, isValid } =
-    useFormWithValidation();
 
-  //обработчик отправки формы
-  function handleSubmit(event) {
-    event.preventDefault();
-    resetFrom();
-
+    const handleInputChange = (event) => {
+      props.setInputValue(event.target.value)
   }
 
-
   return (
-    <section className="search-form">
-      <div className="search-form__container">
-        <form className="search-form__form"
+        <form className="search-form"
+              name="Поиск"
               noValidate
-              onSubmit={handleSubmit}>
+              onSubmit={props.handleFormSubmit}>
           <input
-            className="search-form__search-input"
+            className="search-form__input"
             id="search-input"
             type="search"
             name="search"
-            placeholder="Фильм"
+            placeholder={props.placeholder}
             autoComplete="off"
             required
-            value={values.search || ""}
-            onChange={handleChange}
+            value={props.inputValue || ""}
+            onChange={handleInputChange}
           />
-          <span
-            className="login-page__input-error"
-            id="input-singup-email-error"
-          >
-            {errors.search ? "Введите e-mail " : " "}
-          </span>
           <button className="button search-form__button" type="submit"></button>
         </form>
-        <FilterCheckbox />
-      </div>
-    </section>
   );
 }
 

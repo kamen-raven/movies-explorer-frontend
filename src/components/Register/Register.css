@@ -50,7 +50,3 @@
   transition: all .3s ease 0;
   max-width: 396px;
 }
-
-.register-page__input-error_visible {
-  opacity: 1;
-}

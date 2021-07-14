@@ -1,5 +1,5 @@
 // импорт реакт-компонентов
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, Link, NavLink, useLocation } from "react-router-dom";
 
 import "./Header.css";
@@ -13,6 +13,14 @@ function Header(props) {
   function toggleNavigation() {
     setNavigationOpen(!isNavigationOpen);
   }
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      props.setIsLogged(false)
+    }
+  }, [location.pathname, props]);
+
+
 
   return (
     <Switch>
@@ -48,7 +56,7 @@ function Header(props) {
         </Route>
       ) : (
         /* Страницы с карточками фильмов, сохраненными фильмами и профилем пользователя */
-        <Route path={["/", "/movies", "/saved-movies", "/profile"]}>
+        <Route exact path={["/", "/movies", "/saved-movies", "/profile"]}>
           <header
             className={`header ${
               location.pathname === "/" && "header_theme_dark"

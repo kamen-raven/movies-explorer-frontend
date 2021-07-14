@@ -8,7 +8,7 @@ const initialCards = [
         "year": "2010",
         "duration": 61,
         "description": "В конце 1960-х группа «Роллинг Стоунз», несмотря на все свои мегахиты и сверхуспешные концертные туры, была разорена. Виной всему — бездарный менеджмент и драконовское налогообложение в Британии. Тогда музыканты приняли не самое простое для себя решение: летом 1971 года после выхода альбома «Stiсky Fingers» они отправились на юг Франции записывать новую пластинку. Именно там, на Лазурном Берегу, в арендованном Китом Ричардсом подвале виллы Неллькот родился сборник «Exile on Main St.», который стал лучшим альбомом легендарной группы.",
-        "trailerLink": "https://www.youtube.com/watch?v=UXcqcdYABFw",
+        "trailerLink": null, //"https://www.youtube.com/watch?v=UXcqcdYABFw",
         "created_at": "2020-11-23T14:12:21.376Z",
         "updated_at": "2020-11-23T14:12:21.376Z",
         "image": {
@@ -80,7 +80,7 @@ const initialCards = [
                     "height": 93,
                     "size": 10.33,
                     "path": null,
-                    "url": "/uploads/thumbnail_all_tommoros_parties_33a125248d.jpeg"
+                    "url": null//"/uploads/thumbnail_all_tommoros_parties_33a125248d.jpeg"
                 },
                 "small": {
                     "hash": "small_all_tommoros_parties_33a125248d",

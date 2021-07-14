@@ -3,8 +3,8 @@ import React, { useCallback } from "react";
 export function useForm() {
   const [values, setValues] = React.useState({});
 
-  const handleChange = (evt) => {
-    const input = evt.target;
+  const handleChange = (event) => {
+    const input = event.target;
     const value = input.value;
     const name = input.name;
     setValues({ ...values, [name]: value });
@@ -18,8 +18,8 @@ export function useFormWithValidation() {
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
 
-  const handleChange = (evt) => {
-    const input = evt.target;
+  const handleChange = (event) => {
+    const input = event.target;
     const value = input.value;
     const name = input.name;
     setValues({ ...values, [name]: value });

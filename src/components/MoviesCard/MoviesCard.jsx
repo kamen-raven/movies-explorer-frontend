@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import './MoviesCard.css';
+import "./MoviesCard.css";
+import beatfilmLogo from "../../images/beatfilm_logo.svg";
 
-function MoviesCard({card}) {
+function MoviesCard({ card }) {
   function hoursSetUp() {
     let cardDuration = card.duration;
     let hours = Math.floor(cardDuration / 60);
@@ -12,7 +13,7 @@ function MoviesCard({card}) {
 
   function minutesSetUp() {
     let cardDuration = card.duration;
-    let hours = Math.floor(cardDuration / 60 );
+    let hours = Math.floor(cardDuration / 60);
     let minutes = Math.floor(cardDuration - hours * 60);
     return minutes;
   }
@@ -21,7 +22,9 @@ function MoviesCard({card}) {
     <div className="card">
       <div className="card__info-container">
         <div className="card__info">
-          <h2 className="card__title">{card.nameRU}</h2>
+          <h2 className="card__title">
+            {card.nameRU !== null ? card.nameRU : card.nameEN}
+          </h2>
           <p className="card__duration">{`${hoursSetUp()}ч ${minutesSetUp()}м`}</p>
         </div>
         <button
@@ -31,15 +34,24 @@ function MoviesCard({card}) {
         ></button>
       </div>
       <Link
-        to={{ pathname: card.trailerLink }}
+        to={{
+          pathname:
+            card.trailerLink !== null
+              ? card.trailerLink
+              : "https://beatfilmfestival.ru/",
+        }}
         target="_blank"
         className="card__image-link link"
-        aria-label={card.nameRUC}
+        aria-label={card.nameRU}
       >
         <img
           className="card__image"
-          src={`https://api.nomoreparties.co${card.image.formats.thumbnail.url}`}
-          alt={card.nameRU}
+          src={
+            card.image.formats.thumbnail.url !== null
+              ? `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`
+              : beatfilmLogo
+          }
+          alt={card.nameRU !== null ? card.nameRU : card.nameEN}
         />
       </Link>
     </div>
