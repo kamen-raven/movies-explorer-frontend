@@ -133,6 +133,9 @@ function App() {
   function handleSignout() {
     localStorage.removeItem("token"); //удаляем токен из локального хранилища
     localStorage.removeItem("BeatFilm-movie");
+    sessionStorage.clear();
+    setSearchQuery('');
+    setSearchError('')
     setLoggedIn(false);
     history.push("/");
   }
@@ -209,9 +212,11 @@ function App() {
       .getBeatfilmMovies()
       .then((res) => {
         localStorage.setItem("BeatFilm-movie", JSON.stringify(res));
+        return res;
       })
       .then((res) => {
-        setAllMovies(JSON.parse(localStorage.getItem("BeatFilm-movie")));
+        setAllMovies(res);
+        console.log(allMovies)
       })
       .catch((error) => {
         localStorage.removeItem("BeatFilm-movie");
@@ -254,12 +259,13 @@ function App() {
 
   //проверка на наличие информации о всех фильмах в локальном хранилище
   function checkAllMoviesLocalStorage() {
-    const allMovies = JSON.parse(localStorage.getItem("BeatFilm-movie"));
-    if (allMovies === null) {
+    const movies = JSON.parse(localStorage.getItem("BeatFilm-movie"));
+    if (movies === null) {
       getBeatfilmMoviesList();
       console.log("получили фильмы");
     } else {
-      setAllMovies(allMovies);
+      setAllMovies(movies);
+      console.log("фильмы тут уже");
     }
   }
 
@@ -268,9 +274,7 @@ function App() {
     const foundMovies = searchMovies(allMovies); //делаем поиск по массиву всех фильмов из LS
    // sessionStorage.setItem("Filter-cards", JSON.stringify(foundMovies));
     if (foundMovies.length === 0) { //если ничего не найдено
-      setIsLoading(true);
       setFilterMoviesCards([]); //то в фильтрованный стейт ничего не передается
-      setIsLoading(false);
       sessionStorage.removeItem("Search-query");
       sessionStorage.removeItem("Filter-cards");
       return setSearchError("Ничего не найдено");

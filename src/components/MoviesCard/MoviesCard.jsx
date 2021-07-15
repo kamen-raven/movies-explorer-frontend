@@ -42,7 +42,7 @@ function MoviesCard({ card }) {
         }}
         target="_blank"
         className="card__image-link link"
-        aria-label={card.nameRU}
+        aria-label={card.nameRU !== null ? card.nameRU : card.nameEN}
       >
         <img
           className="card__image"

@@ -14,11 +14,15 @@ function Header(props) {
     setNavigationOpen(!isNavigationOpen);
   }
 
-  useEffect(() => {
+  useEffect(() => { // если нет авторизации, то отображаем хэдер для регистрации
     if (!localStorage.getItem('token')) {
       props.setIsLogged(false)
     }
   }, [location.pathname, props]);
+
+  useEffect(() => {  // закрываем навигацию после перехода на новую страницу
+    setNavigationOpen(false)
+    }, [location.pathname]);
 
 
 

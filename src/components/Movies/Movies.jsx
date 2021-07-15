@@ -47,9 +47,11 @@ function Movies({
           <FilterCheckbox />
         </div>
       </section>
-      {isLoading ? (
+      {isLoading && (
         <Preloader />
-      ) : (
+      )}
+
+       {!isLoading && (
         <MoviesCardList
           errorMessageCardList={errorMessage}
           searchResult={searchedCards}
