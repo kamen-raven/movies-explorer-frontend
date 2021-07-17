@@ -1,26 +1,11 @@
-import React, { useEffect, useCallback } from "react";
+import React from "react";
 
 import "./FilterCheckbox.css";
 
-function FilterCheckbox({ filterCheckbox, setFilterChechbox, filterMoviesCards }) {
-
-
+function FilterCheckbox(props) {
   function changeFilterCheckbox() {
-    setFilterChechbox(!filterCheckbox);
-    //sessionStorage.setItem("Filter-checkbox", !filterCheckbox)
+    props.setFilterChechbox(!props.filterCheckbox);
   }
-
-/*   const changeFilterCheckbox = useCallback(() => {
-    setFilterChechbox(!filterCheckbox);
-    sessionStorage.setItem("Filter-checkbox", !filterCheckbox)
-  }, [filterCheckbox, setFilterChechbox])
- */
-/*   useEffect(() => {
-    if(sessionStorage.getItem("Filter-checkbox") === true) {
-      setFilterChechbox(filterCheckbox)
-    }
-  }, [filterCheckbox, setFilterChechbox])
- */
 
   return (
     <div className="checkbox">
@@ -30,7 +15,7 @@ function FilterCheckbox({ filterCheckbox, setFilterChechbox, filterMoviesCards }
           name="checkbox"
           type="checkbox"
           id="checkbox"
-          checked={sessionStorage.getItem("Filter-checkbox") === true ? !filterCheckbox : filterCheckbox}
+          checked={props.filterCheckbox || false}
           onChange={changeFilterCheckbox}
         />
         <label className="checkbox__toggle" htmlFor="checkbox">

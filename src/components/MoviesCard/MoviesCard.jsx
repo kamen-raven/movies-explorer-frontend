@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "./MoviesCard.css";
 import beatfilmLogo from "../../images/beatfilm_logo.svg";
 
 function MoviesCard({ card }) {
+  const location = useLocation();
+
   function hoursSetUp() {
     let cardDuration = card.duration;
     let hours = Math.floor(cardDuration / 60);
@@ -27,11 +29,19 @@ function MoviesCard({ card }) {
           </h2>
           <p className="card__duration">{`${hoursSetUp()}ч ${minutesSetUp()}м`}</p>
         </div>
-        <button
-          className="card__button card__button_type_save"
-          type="button"
-          aria-label="Сохранить в избранное"
-        ></button>
+        {location.pathname === "/movies" ? (
+          <button
+            className="card__button card__button_type_save"
+            type="button"
+            aria-label="Сохранить в избранное"
+          ></button>
+        ) : (
+          <button
+            className="card__button card__button_type_delete"
+            type="button"
+            aria-label="Удалить из избранного"
+          ></button>
+        )}
       </div>
       <Link
         to={{

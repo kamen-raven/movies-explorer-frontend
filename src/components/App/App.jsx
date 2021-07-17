@@ -25,14 +25,16 @@ import * as auth from "../../api/auth-api"; // api регистрации и а�
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
+
 function App() {
   //-----------------РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ НА САЙТЕ
+  const history = useHistory();
+  const location = useLocation();
+
   const [loggedIn, setLoggedIn] = useState(false); //стейт состояния авторизации на сайте
   const [currentUser, setCurretUser] = useState({}); //стейт-переменная данных пользоваетля
   const [isInfoVisible, setIsInfoVisible] = useState(false); //стейт-переменная отображения информации при работе с формами
   const [isInfoSucces, setIsInfoSucces] = useState(""); // стейт сообщения об ошибки
-  const history = useHistory();
-  const location = useLocation();
 
   //----------------------РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ И ВЫХОД-----------------------//
   // обновление данных стейта отображения ошибки при регистрации, авторизации
@@ -41,11 +43,9 @@ function App() {
       setIsInfoSucces("");
       setIsInfoVisible(false);
     }
-
     if (location.pathname === "/signup" && loggedIn) {
       history.push("/movies");
     }
-
     if (location.pathname === "/signin" && loggedIn) {
       history.push("/movies");
     }
@@ -120,6 +120,7 @@ function App() {
         })
         .catch((error) => {
           localStorage.removeItem("token"); //если токен некорректный - очищаем локальное хранилище
+          localStorage.removeItem("BeatFilm-movie");
           sessionStorage.clear();
           history.push("/"); //если токена нет - перенаправляем на главную
           console.log(
@@ -148,26 +149,29 @@ function App() {
     history.push("/");
   }
 
-  //задавание стейта текущего пользователя
-  useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getCurrentUser()
-        .then((res) => {
-          setCurretUser(res); //отрисовка данных пользователя
-        })
-        .catch((error) => {
-          console.log(
-            `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
-          );
-        });
-    } else {
-      setCurretUser({});
-    }
-  }, [loggedIn]);
 
   //---------РЕДАКТИРОВАНИЕ ПРОФИЛЯ----------------//
   const [isProfileEdit, setIsProfileEdit] = useState(false); //стейт нажатия кнопки Редактировать
+
+    //задавание стейта текущего пользователя
+    useEffect(() => {
+      if (loggedIn) {
+        mainApi
+          .getCurrentUser()
+          .then((res) => {
+            setCurretUser(res); //отрисовка данных пользователя
+          })
+          .catch((error) => {
+            console.log(
+              `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
+            );
+          });
+      } else {
+        setCurretUser({});
+      }
+    }, [loggedIn]);
+
+
   // обновление данных стейта отображения ошибки при редактировании профиля
   useEffect(() => {
     if (location.pathname === "/profile") {
@@ -215,7 +219,7 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false); //стейт загрузки данных
 
-  const [filterCheckbox, setFilterChechbox] = useState(false);
+  const [filterCheckbox, setFilterChechbox] = useState(false); //стейт активного чекбокса коротких фильмов
 
   // эффект добавления стейта изначальных карточек фильмов
   useEffect(() => {
@@ -253,82 +257,27 @@ function App() {
     }
   }, []);
 
-  //функция поиска фильмов
-  function searchMovies(items) {
-    return items.filter((item) => {
-      /*       if(filterCheckbox===true) {   // поиск с условием
-        setSearchError("");
-        return item.nameRU
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) &&
-          item.duration <= 40
-      } else { */
-      setSearchError("");
-      return item.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
-    });
-  }
-
-  // проверка результатов поиска
-  function checkSearchAnswerNotEmpty() {
-    const foundMovies = searchMovies(allMovies); //делаем поиск по массиву всех фильмов из LS
-    if (foundMovies.length === 0) {
-      //если ничего не найдено
-      setFilterMoviesCards([]); //то в фильтрованный стейт ничего не передается
-      sessionStorage.removeItem("Search-query");
-      sessionStorage.removeItem("Filter-cards");
-      return setSearchError("Ничего не найдено");
-    } else {
-      sessionStorage.setItem("Search-query", searchQuery);
-      setFilterMoviesCards(foundMovies);
-    }
-    sessionStorage.setItem("Filter-cards", JSON.stringify(foundMovies));
-  }
-
-  //функция поиска коротких фильмов
-  function searchShortMovies() {
-    const filterMovies = JSON.parse(sessionStorage.getItem("Filter-cards")); // по имеющимуся массиву найденных всех фильмов
-    return filterMovies.filter((card) => { // делаем поиск по условию короткометражки
-      return card.duration <= 40;
-    });
-  }
-
-
-  function checkShortSearch() {
-    const filterMovies = JSON.parse(sessionStorage.getItem("Filter-cards"));
-    if(filterMovies.length !== 0) { // если есть найденные фильмы в целом - то происходит поиск короткометражек
-      if (filterCheckbox === true) { // если включено условия поиска по короткометражкам
-        const shortMovies = searchShortMovies();  //поиск по короткометражкам
-        if (shortMovies.length === 0) {  // если ничего не найдено по короткометражкам
-          setShortFilterMoviesCards([]); //то в фильтрованный стейт ничего не передается
-          sessionStorage.removeItem("Filter-short-cards");
-          return setSearchError("Ничего не найдено");
-        } else {
-          setShortFilterMoviesCards(shortMovies);
-        }
-        sessionStorage.setItem("Filter-short-cards", JSON.stringify(shortMovies));
-      } else {
-        setShortFilterMoviesCards([]);
-        sessionStorage.removeItem("Filter-short-cards");
-      }
-    }
-  }
-
-  //обработчик отправки формы поиска
+/*   //обработчик отправки формы поиска MOVIES
   function handleSearchFormSumbit(event) {
     event.preventDefault();
     if (searchQuery === "") {
       setFilterMoviesCards([]);
       setShortFilterMoviesCards([]);
-      setSearchError("Нужно ввести ключевое слово")
+      setSearchError("Нужно ввести ключевое слово");
       sessionStorage.removeItem("Search-query");
       sessionStorage.removeItem("Filter-cards");
       sessionStorage.removeItem("Filter-short-cards");
       return searchError;
     } else {
-      checkSearchAnswerNotEmpty();
-      checkShortSearch();
+      checkSearchAnswerNotEmpty(
+        allMovies,
+        setFilterMoviesCards,
+        setShortFilterMoviesCards,
+        searchQuery,
+        setSearchError
+      );
     }
-  }
+  } */
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -345,10 +294,11 @@ function App() {
             component={Movies}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
-            handleFormSubmit={handleSearchFormSumbit}
             errorMessage={searchError}
+            setErrorMessage={setSearchError}
             valueSearchMovies={searchQuery}
             setValueSearchMovies={setSearchQuery}
+            allCArds={allMovies}
             searchedCards={filterMoviesCards}
             setSearchedCards={setFilterMoviesCards}
             searchedShortCards={shortFilterMoviesCards}
@@ -377,7 +327,6 @@ function App() {
             isProfileEdit={isProfileEdit}
             setIsProfileEdit={setIsProfileEdit}
           />
-
           {/* регистрация */}
           <Route path="/signup">
             <Register

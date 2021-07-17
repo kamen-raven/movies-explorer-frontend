@@ -6,15 +6,22 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 import { useWindowWidthSize } from "../../hooks/useWindowWidthSize";
 
-function MoviesCardList(props) {
+function MoviesCardList({
+  valueSearchMovies,
+  errorMessageCardList,
+  setErrorMessageCardList,
+  searchFullResult,
+  searchShortResult,
+  filterCheckbox,
+}) {
   const widthSize = useWindowWidthSize(); //хук ширины экрана
 
   const [renderCountCards, setRenderCountCards] = useState(Number); // стейт количества первначально загружаемых карточек в зависимости от ширины экрана
   const [showMoreButton, setShowMoreButton] = useState(Number); // стейт количества добавления карточек по кнопке ЕЩЕ в зависимости от ширины экрана
   const [widthCountLoad, setWidthCountLoad] = useState(Number); // стейт отображения нужного количества карточек в зависимости от ширины экрана
 
+      // задаем изначальное количество отображаемых карточек
   const setInitialCount = useCallback(() => {
-    // задаем изначальное количество отображаемых карточек
     if (widthSize >= 1280) {
       setRenderCountCards(12); //Ширина 1280px — 12 карточек по 3 в ряд.
       setShowMoreButton(3); //Кнопка «Ещё» загружает по 3 карточки.
@@ -38,28 +45,30 @@ function MoviesCardList(props) {
     setWidthCountLoad(widthCountLoad + showMoreButton);
   }
 
-  const [searchResults, setSearchResutls] = useState([]);
+  const [searchResults, setSearchResutls] = useState([]); // стейт отображения результата поиска
+  // отображение результата поиска в зависимости отт фильтра короткометражек
   const renderResults = useCallback(() => {
-    if (props.filterCheckbox === true) {
-      if (props.searchShortResult.length !== 0) {
-        setSearchResutls(props.searchShortResult);
+    if (filterCheckbox === true) {
+      // если фильтр включен
+      if (searchShortResult.length !== 0) {
+        // и если есть короткометражки
+        setSearchResutls(searchShortResult); // показываем короткометражки
       } else {
-        setSearchResutls(props.searchResult);
+        setSearchResutls([]); //если короткометражек нет, то задаем ошибку поиска
+        valueSearchMovies === ""
+          ? setErrorMessageCardList("Нужно ввести ключевое слово")
+          : setErrorMessageCardList("Ничего не найдено");
       }
     } else {
-      setSearchResutls(props.searchResult);
+      setSearchResutls(searchFullResult); // если фильтр выключен - то задаем результат общий
     }
-  }, [props.filterCheckbox, props.searchResult, props.searchShortResult]);
-
-  /*   const renderResults = useCallback(() => {
-    if(props.searchShortResult.length !== 0) {
-      setSearchResutls(props.searchShortResult)
-    } else {
-      setSearchResutls(props.searchResult);
-    }
-  }, [props.searchResult, props.searchShortResult])
-
- */
+  }, [
+    filterCheckbox,
+    searchFullResult,
+    searchShortResult,
+    setErrorMessageCardList,
+    valueSearchMovies,
+  ]);
 
   useEffect(() => {
     renderResults();
@@ -70,9 +79,7 @@ function MoviesCardList(props) {
       {searchResults.length === 0 ? (
         <div className="cards__container cards__empty-page ">
           <h3 className="cards__empty-info">
-            {props.errorMessageCardList
-              ? props.errorMessageCardList
-              : "Ищите и найдёте"}
+            {errorMessageCardList ? errorMessageCardList : "Ищите и найдёте"}
           </h3>
         </div>
       ) : (
