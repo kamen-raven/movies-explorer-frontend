@@ -13,9 +13,10 @@ function MoviesCardList(props) {
   const [showMoreButton, setShowMoreButton] = useState(Number); // стейт количества добавления карточек по кнопке ЕЩЕ в зависимости от ширины экрана
   const [widthCountLoad, setWidthCountLoad] = useState(Number); // стейт отображения нужного количества карточек в зависимости от ширины экрана
 
-  const setInitialCount = useCallback(() => { // задаем изначальное количество отображаемых карточек
+  const setInitialCount = useCallback(() => {
+    // задаем изначальное количество отображаемых карточек
     if (widthSize >= 1280) {
-      setRenderCountCards(12);  //Ширина 1280px — 12 карточек по 3 в ряд.
+      setRenderCountCards(12); //Ширина 1280px — 12 карточек по 3 в ряд.
       setShowMoreButton(3); //Кнопка «Ещё» загружает по 3 карточки.
     }
     if (768 <= widthSize && widthSize < 1280) {
@@ -34,14 +35,39 @@ function MoviesCardList(props) {
   }, [setInitialCount]);
 
   function showMoreCards() {
-      setWidthCountLoad(widthCountLoad + showMoreButton);
+    setWidthCountLoad(widthCountLoad + showMoreButton);
   }
 
+  const [searchResults, setSearchResutls] = useState([]);
+  const renderResults = useCallback(() => {
+    if (props.filterCheckbox === true) {
+      if (props.searchShortResult.length !== 0) {
+        setSearchResutls(props.searchShortResult);
+      } else {
+        setSearchResutls(props.searchResult);
+      }
+    } else {
+      setSearchResutls(props.searchResult);
+    }
+  }, [props.filterCheckbox, props.searchResult, props.searchShortResult]);
 
+  /*   const renderResults = useCallback(() => {
+    if(props.searchShortResult.length !== 0) {
+      setSearchResutls(props.searchShortResult)
+    } else {
+      setSearchResutls(props.searchResult);
+    }
+  }, [props.searchResult, props.searchShortResult])
+
+ */
+
+  useEffect(() => {
+    renderResults();
+  }, [renderResults]);
 
   return (
     <section className="cards container">
-      {props.searchResult.length === 0 ? (
+      {searchResults.length === 0 ? (
         <div className="cards__container cards__empty-page ">
           <h3 className="cards__empty-info">
             {props.errorMessageCardList
@@ -52,14 +78,14 @@ function MoviesCardList(props) {
       ) : (
         <div className="cards__container">
           <div className="cards__list">
-            {props.searchResult.slice(0, widthCountLoad).map((card) => (
+            {searchResults.slice(0, widthCountLoad).map((card) => (
               <MoviesCard card={card} key={card.id} />
               /*               onCardClick={props.onCardClick}
             onCardLike={props.onCardLike}
             onCardDelete={props.onCardDelete} */
             ))}
           </div>
-          {widthCountLoad < props.searchResult.length && (
+          {widthCountLoad < searchResults.length && (
             <button // отображаем карточку ЕЩЕ - если есть что еще отображать
               className={`button cards__button-more`}
               onClick={showMoreCards}

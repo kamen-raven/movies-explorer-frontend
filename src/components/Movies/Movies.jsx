@@ -14,6 +14,7 @@ function Movies({
   valueSearchMovies,
   setValueSearchMovies,
   searchedCards,
+  searchedShortCards,
   setSearchedCards,
   isLoading,
   filterCheckbox,
@@ -30,9 +31,14 @@ function Movies({
       setValueSearchMovies(sessionStorage.getItem("Search-query"));
       const filteredMovies = JSON.parse(sessionStorage.getItem("Filter-cards"));
       setSearchedCards(filteredMovies);
-      setFilterChechbox(sessionStorage.getItem("Filter-checkbox"));
+      //setFilterChechbox(sessionStorage.getItem("Filter-short-cards"));
     }
-  }, [location.pathname, setFilterChechbox, setSearchedCards, setValueSearchMovies]);
+  }, [
+    location.pathname,
+    setFilterChechbox,
+    setSearchedCards,
+    setValueSearchMovies,
+  ]);
 
   return (
     <main className="main">
@@ -48,8 +54,8 @@ function Movies({
             setFilterChechbox={setFilterChechbox}
           />
           <FilterCheckbox
-          filterCheckbox={filterCheckbox}
-          setFilterChechbox={setFilterChechbox}
+            filterCheckbox={filterCheckbox}
+            setFilterChechbox={setFilterChechbox}
           />
         </div>
       </section>
@@ -59,7 +65,9 @@ function Movies({
         <MoviesCardList
           errorMessageCardList={errorMessage}
           searchResult={searchedCards}
+          searchShortResult={searchedShortCards}
           filterMoviesCards={searchedCards}
+          filterCheckbox={filterCheckbox}
         />
       )}
     </main>

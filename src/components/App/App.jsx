@@ -42,11 +42,11 @@ function App() {
       setIsInfoVisible(false);
     }
 
-    if((location.pathname === "/signup") && loggedIn) {
+    if (location.pathname === "/signup" && loggedIn) {
       history.push("/movies");
     }
 
-    if((location.pathname === "/signin") && loggedIn) {
+    if (location.pathname === "/signin" && loggedIn) {
       history.push("/movies");
     }
   }, [history, location.pathname, loggedIn]);
@@ -209,17 +209,21 @@ function App() {
 
   const [searchQuery, setSearchQuery] = useState(""); //стейт строки поискового запроса
   const [searchError, setSearchError] = useState(""); //стейт текста ошибки запроса поиска
+
   const [filterMoviesCards, setFilterMoviesCards] = useState([]); //стейт массива найденных карточек
+  const [shortFilterMoviesCards, setShortFilterMoviesCards] = useState([]); //стейт массива короткометражек найденных карточек
 
   const [isLoading, setIsLoading] = useState(false); //стейт загрузки данных
 
   const [filterCheckbox, setFilterChechbox] = useState(false);
 
-
-
   // эффект добавления стейта изначальных карточек фильмов
   useEffect(() => {
-    if (location.pathname==="/movies" && loggedIn === true && !localStorage.getItem("BeatFilm-movie")) {
+    if (
+      location.pathname === "/movies" &&
+      loggedIn === true &&
+      !localStorage.getItem("BeatFilm-movie")
+    ) {
       setIsLoading(true);
       return beatfilmMoviesApi
         .getBeatfilmMovies()
@@ -252,18 +256,15 @@ function App() {
   //функция поиска фильмов
   function searchMovies(items) {
     return items.filter((item) => {
-      if(filterCheckbox===true) {   // поиск с условием
+      /*       if(filterCheckbox===true) {   // поиск с условием
         setSearchError("");
         return item.nameRU
           .toLowerCase()
           .includes(searchQuery.toLowerCase()) &&
           item.duration <= 40
-      } else {
-        setSearchError("");
-        return item.nameRU
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
-      }
+      } else { */
+      setSearchError("");
+      return item.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
     });
   }
 
@@ -283,26 +284,49 @@ function App() {
     sessionStorage.setItem("Filter-cards", JSON.stringify(foundMovies));
   }
 
+  //функция поиска коротких фильмов
+  function searchShortMovies() {
+    const filterMovies = JSON.parse(sessionStorage.getItem("Filter-cards")); // по имеющимуся массиву найденных всех фильмов
+    return filterMovies.filter((card) => { // делаем поиск по условию короткометражки
+      return card.duration <= 40;
+    });
+  }
 
-/*   function checkboxFilterSearch() {
-    if (filterCheckbox === true) {
-      return filterMoviesCards.filter((card) => {
-        return card.duration <= 40;
-      })
+
+  function checkShortSearch() {
+    const filterMovies = JSON.parse(sessionStorage.getItem("Filter-cards"));
+    if(filterMovies.length !== 0) { // если есть найденные фильмы в целом - то происходит поиск короткометражек
+      if (filterCheckbox === true) { // если включено условия поиска по короткометражкам
+        const shortMovies = searchShortMovies();  //поиск по короткометражкам
+        if (shortMovies.length === 0) {  // если ничего не найдено по короткометражкам
+          setShortFilterMoviesCards([]); //то в фильтрованный стейт ничего не передается
+          sessionStorage.removeItem("Filter-short-cards");
+          return setSearchError("Ничего не найдено");
+        } else {
+          setShortFilterMoviesCards(shortMovies);
+        }
+        sessionStorage.setItem("Filter-short-cards", JSON.stringify(shortMovies));
+      } else {
+        setShortFilterMoviesCards([]);
+        sessionStorage.removeItem("Filter-short-cards");
+      }
     }
   }
- */
+
   //обработчик отправки формы поиска
   function handleSearchFormSumbit(event) {
     event.preventDefault();
     if (searchQuery === "") {
       setFilterMoviesCards([]);
+      setShortFilterMoviesCards([]);
+      setSearchError("Нужно ввести ключевое слово")
       sessionStorage.removeItem("Search-query");
       sessionStorage.removeItem("Filter-cards");
-      setSearchError("Нужно ввести ключевое слово");
+      sessionStorage.removeItem("Filter-short-cards");
       return searchError;
     } else {
       checkSearchAnswerNotEmpty();
+      checkShortSearch();
     }
   }
 
@@ -327,6 +351,8 @@ function App() {
             setValueSearchMovies={setSearchQuery}
             searchedCards={filterMoviesCards}
             setSearchedCards={setFilterMoviesCards}
+            searchedShortCards={shortFilterMoviesCards}
+            setSearchedShortCards={setShortFilterMoviesCards}
             isLoading={isLoading}
             filterCheckbox={filterCheckbox}
             setFilterChechbox={setFilterChechbox}
