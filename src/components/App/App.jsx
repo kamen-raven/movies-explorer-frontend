@@ -41,7 +41,15 @@ function App() {
       setIsInfoSucces("");
       setIsInfoVisible(false);
     }
-  }, [location.pathname]);
+
+    if((location.pathname === "/signup") && loggedIn) {
+      history.push("/movies");
+    }
+
+    if((location.pathname === "/signin") && loggedIn) {
+      history.push("/movies");
+    }
+  }, [history, location.pathname, loggedIn]);
 
   //обработчик регистрации
   function handleRegister({ email, password, username }) {
@@ -205,14 +213,18 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false); //стейт загрузки данных
 
+  const [filterCheckbox, setFilterChechbox] = useState(false);
+
+
+
   // эффект добавления стейта изначальных карточек фильмов
   useEffect(() => {
-    if (!localStorage.getItem("BeatFilm-movie")) {
+    if (location.pathname==="/movies" && loggedIn === true && !localStorage.getItem("BeatFilm-movie")) {
       setIsLoading(true);
       return beatfilmMoviesApi
         .getBeatfilmMovies()
         .then((res) => {
-          localStorage.setItem("BeatFilm-movie", JSON.parse(res));
+          localStorage.setItem("BeatFilm-movie", JSON.stringify(res));
           return res;
         })
         .then((res) => {
@@ -229,7 +241,7 @@ function App() {
         })
         .finally(() => setIsLoading(false));
     }
-  }, [allMovies]);
+  }, [location.pathname, loggedIn]);
 
   useEffect(() => {
     if (localStorage.getItem("BeatFilm-movie")) {
@@ -240,13 +252,18 @@ function App() {
   //функция поиска фильмов
   function searchMovies(items) {
     return items.filter((item) => {
-      setSearchError("");
-      return item.nameRU
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()); /* ||
-            item.nameEN === null
-            ? setSearchError("Нужно ввести ключевое слово")
-            : item.nameEN.toLowerCase().includes(searchQuery.toLowerCase())); */
+      if(filterCheckbox===true) {   // поиск с условием
+        setSearchError("");
+        return item.nameRU
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) &&
+          item.duration <= 40
+      } else {
+        setSearchError("");
+        return item.nameRU
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+      }
     });
   }
 
@@ -266,11 +283,22 @@ function App() {
     sessionStorage.setItem("Filter-cards", JSON.stringify(foundMovies));
   }
 
+
+/*   function checkboxFilterSearch() {
+    if (filterCheckbox === true) {
+      return filterMoviesCards.filter((card) => {
+        return card.duration <= 40;
+      })
+    }
+  }
+ */
   //обработчик отправки формы поиска
   function handleSearchFormSumbit(event) {
     event.preventDefault();
     if (searchQuery === "") {
       setFilterMoviesCards([]);
+      sessionStorage.removeItem("Search-query");
+      sessionStorage.removeItem("Filter-cards");
       setSearchError("Нужно ввести ключевое слово");
       return searchError;
     } else {
@@ -300,6 +328,8 @@ function App() {
             searchedCards={filterMoviesCards}
             setSearchedCards={setFilterMoviesCards}
             isLoading={isLoading}
+            filterCheckbox={filterCheckbox}
+            setFilterChechbox={setFilterChechbox}
           />
           {/* сохраненные фильмы */}
           <ProtectedRoute

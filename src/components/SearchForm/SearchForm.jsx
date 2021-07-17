@@ -1,5 +1,7 @@
 import React from "react";
 
+import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+
 import "./SearchForm.css";
 
 function SearchForm(props) {
@@ -25,6 +27,10 @@ function SearchForm(props) {
             onChange={handleInputChange}
           />
           <button className="button search-form__button" type="submit"></button>
+{/*           <FilterCheckbox
+            filterCheckbox={props.filterCheckbox}
+            setFilterChechbox={props.setFilterChechbox}
+          /> */}
         </form>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {  useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import "./Movies.css";
 
@@ -16,22 +16,23 @@ function Movies({
   searchedCards,
   setSearchedCards,
   isLoading,
+  filterCheckbox,
+  setFilterChechbox,
 }) {
   const location = useLocation();
 
   //эффект загрузки данных предыдущего поиска при повторном заходе на сайт в той же сессии
   useEffect(() => {
-    if (sessionStorage.getItem("Search-query") &&  location.pathname === "/movies") {
-      setValueSearchMovies(sessionStorage.getItem("Search-query"))
+    if (
+      sessionStorage.getItem("Search-query") &&
+      location.pathname === "/movies"
+    ) {
+      setValueSearchMovies(sessionStorage.getItem("Search-query"));
       const filteredMovies = JSON.parse(sessionStorage.getItem("Filter-cards"));
       setSearchedCards(filteredMovies);
+      setFilterChechbox(sessionStorage.getItem("Filter-checkbox"));
     }
-  }, [location.pathname, setSearchedCards, setValueSearchMovies]);
-
-
-
-
-
+  }, [location.pathname, setFilterChechbox, setSearchedCards, setValueSearchMovies]);
 
   return (
     <main className="main">
@@ -43,22 +44,24 @@ function Movies({
             handleFormSubmit={handleFormSubmit}
             setInputValue={setValueSearchMovies}
             inputValue={valueSearchMovies}
+            filterCheckbox={filterCheckbox}
+            setFilterChechbox={setFilterChechbox}
           />
-          <FilterCheckbox />
+          <FilterCheckbox
+          filterCheckbox={filterCheckbox}
+          setFilterChechbox={setFilterChechbox}
+          />
         </div>
       </section>
-      {isLoading && (
-        <Preloader />
-      )}
+      {isLoading && <Preloader />}
 
-       {!isLoading && (
+      {!isLoading && (
         <MoviesCardList
           errorMessageCardList={errorMessage}
           searchResult={searchedCards}
+          filterMoviesCards={searchedCards}
         />
       )}
-
-
     </main>
   );
 }
