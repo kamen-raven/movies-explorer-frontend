@@ -69,10 +69,10 @@ class Api {
         duration: data.duration,
         year: data.year,
         description: data.description,
-        image: data.image,
-        trailer: data.trailer,
-        thumbnail: data.thumbnail,
-        movieId: data.movieId,
+        image: data.image.url, //image: data.image,
+        trailer: data.trailerLink, //trailer: data.trailer,
+        thumbnail: data.image.formats.thumbnail.url, //thumbnail: data.thumbnail,
+        movieId: data.id, //movieId: data.movieId,
         nameRU: data.nameRU,
         nameEN: data.nameEN
       })

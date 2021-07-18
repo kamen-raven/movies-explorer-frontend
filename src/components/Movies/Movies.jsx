@@ -75,7 +75,7 @@ function Movies({
         <div className="movies__search-container">
           <SearchForm
             placeholder={"Фильмы"}
-            errorMessageSearchForm={errorMessage}
+            //errorMessageSearchForm={errorMessage}
             handleFormSubmit={handleSearchFormSumbit}
             setInputValue={setValueSearchMovies}
             inputValue={valueSearchMovies}

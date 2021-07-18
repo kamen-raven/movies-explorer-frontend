@@ -41,3 +41,29 @@ export function checkSearchAnswerNotEmpty(
     sessionStorage.setItem("Filter-short-cards", JSON.stringify(shortMovies));
   }
 }
+
+export function checkSavedSearch(
+  items,
+  setFilterResults,
+  setShortFilterResults,
+  query,
+  setErrors
+) {
+  const foundMovies = searchMovies(items, query, setErrors); //делаем поиск по массиву всех фильмов из LS
+  if (foundMovies.length === 0) {
+    //если ничего не найдено
+    setFilterResults([]); //то в фильтрованный стейт ничего не передается
+    setShortFilterResults([]);
+    return setErrors("Ничего не найдено"); // возвращаем отображение пустого поиска
+  } else {
+    //если что-то нашли
+    setFilterResults(foundMovies); //задаем стейты
+    const shortMovies = searchShortMovies(foundMovies);
+    setShortFilterResults(shortMovies);
+  }
+}
+
+  export function stateSavedShordMovies(items, setShortFilterResults) {
+      const shortMovies = searchShortMovies(items);
+      setShortFilterResults(shortMovies);
+  }

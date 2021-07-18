@@ -24,19 +24,18 @@ import mainApi from "../../api/movies-explorer-api"; // api сохранения
 import * as auth from "../../api/auth-api"; // api регистрации и авторизации
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-
+import { stateSavedShordMovies } from '../../utils/searchUtils';
 
 function App() {
-  //-----------------РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ НА САЙТЕ
   const history = useHistory();
   const location = useLocation();
 
+  //----------------------РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ И ВЫХОД-----------------------//
   const [loggedIn, setLoggedIn] = useState(false); //стейт состояния авторизации на сайте
   const [currentUser, setCurretUser] = useState({}); //стейт-переменная данных пользоваетля
   const [isInfoVisible, setIsInfoVisible] = useState(false); //стейт-переменная отображения информации при работе с формами
   const [isInfoSucces, setIsInfoSucces] = useState(""); // стейт сообщения об ошибки
 
-  //----------------------РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ И ВЫХОД-----------------------//
   // обновление данных стейта отображения ошибки при регистрации, авторизации
   useEffect(() => {
     if (location.pathname === "/signup" || "/signin") {
@@ -119,8 +118,7 @@ function App() {
           //setCurretUser(res);
         })
         .catch((error) => {
-          localStorage.removeItem("token"); //если токен некорректный - очищаем локальное хранилище
-          localStorage.removeItem("BeatFilm-movie");
+          localStorage.clear(); //если токен некорректный - очищаем локальное хранилище
           sessionStorage.clear();
           history.push("/"); //если токена нет - перенаправляем на главную
           console.log(
@@ -149,28 +147,26 @@ function App() {
     history.push("/");
   }
 
-
   //---------РЕДАКТИРОВАНИЕ ПРОФИЛЯ----------------//
   const [isProfileEdit, setIsProfileEdit] = useState(false); //стейт нажатия кнопки Редактировать
 
-    //задавание стейта текущего пользователя
-    useEffect(() => {
-      if (loggedIn) {
-        mainApi
-          .getCurrentUser()
-          .then((res) => {
-            setCurretUser(res); //отрисовка данных пользователя
-          })
-          .catch((error) => {
-            console.log(
-              `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
-            );
-          });
-      } else {
-        setCurretUser({});
-      }
-    }, [loggedIn]);
-
+  //задавание стейта текущего пользователя и сохраненных пользователем фильмов
+  useEffect(() => {
+    if (loggedIn) {
+      mainApi
+        .getCurrentUser()
+        .then((res) => {
+          setCurretUser(res); //отрисовка данных пользователя
+        })
+        .catch((error) => {
+          console.log(
+            `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
+          );
+        });
+    } else {
+      setCurretUser({});
+    }
+  }, [loggedIn]);
 
   // обновление данных стейта отображения ошибки при редактировании профиля
   useEffect(() => {
@@ -208,7 +204,7 @@ function App() {
       });
   }
 
-  //--------------СТРАНИЦА ФИЛЬМОВ-------------//
+  //--------------СТРАНИЦА ФИЛЬМОВ MOVIES-------------//
   const [allMovies, setAllMovies] = useState([]); //стейт массива всех фильмов
 
   const [searchQuery, setSearchQuery] = useState(""); //стейт строки поискового запроса
@@ -218,7 +214,6 @@ function App() {
   const [shortFilterMoviesCards, setShortFilterMoviesCards] = useState([]); //стейт массива короткометражек найденных карточек
 
   const [isLoading, setIsLoading] = useState(false); //стейт загрузки данных
-
   const [filterCheckbox, setFilterChechbox] = useState(false); //стейт активного чекбокса коротких фильмов
 
   // эффект добавления стейта изначальных карточек фильмов
@@ -251,33 +246,81 @@ function App() {
     }
   }, [location.pathname, loggedIn]);
 
+  // эффект обновления стейта при повторном заходе
   useEffect(() => {
     if (localStorage.getItem("BeatFilm-movie")) {
       setAllMovies(JSON.parse(localStorage.getItem("BeatFilm-movie")));
     }
   }, []);
 
-/*   //обработчик отправки формы поиска MOVIES
-  function handleSearchFormSumbit(event) {
-    event.preventDefault();
-    if (searchQuery === "") {
-      setFilterMoviesCards([]);
-      setShortFilterMoviesCards([]);
-      setSearchError("Нужно ввести ключевое слово");
-      sessionStorage.removeItem("Search-query");
-      sessionStorage.removeItem("Filter-cards");
-      sessionStorage.removeItem("Filter-short-cards");
-      return searchError;
-    } else {
-      checkSearchAnswerNotEmpty(
-        allMovies,
-        setFilterMoviesCards,
-        setShortFilterMoviesCards,
-        searchQuery,
-        setSearchError
-      );
+  //--------------СТРАНИЦА СОХРАНЕННЫХ ФИЛЬМОВ SAVED-MOVIES-------------//
+  const [savedMovies, setSavedMovies] = useState([]); //стейт сохраненных пользователем фильмов
+  const [savedShortMovies, setSavedShortMovies] = useState([]); //стейт сохраненных пользователем коротких фильмов
+
+  const [savedSearchQuery, setSavedSearchQuery] = useState(""); //стейт строки поискового запроса сохраненных карточек
+  const [savedSearchError, setSavedSearchError] = useState(""); //стейт текста ошибки запроса поиска сохраненных карточек
+
+  const [savedFilterMoviesCards, setSavedFilterMoviesCards] = useState([]); //стейт массива сохраненных карточек
+  const [savedShortFilterMoviesCards, setSavedShortFilterMoviesCards] = useState([]); //стейт массива короткометражек сохраненных
+
+  // загрузка данных сохраненных фильмов
+  useEffect(() => {
+    if (loggedIn && !localStorage.getItem("Saved-movie")) {
+      setIsLoading(true);
+
+      mainApi
+        .getMovies()
+        .then((res) => {
+          setSavedMovies(res);
+          return res;
+        })
+        .then((res) => {
+          localStorage.setItem("Saved-movie", JSON.stringify(res));
+        })
+        .catch((error) => {
+          localStorage.removeItem("Saved-movie");
+          setSavedSearchError(
+            "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
+          );
+          console.log(
+            `Хьюстон, у нас проблема при загрузке информации о сохраненных фильмах: ${error}`
+          );
+        })
+        .finally(() => setIsLoading(false));
     }
-  } */
+  }, [loggedIn]);
+
+  // эффект обновления стейта при повторном заходе
+  useEffect(() => {
+    if (localStorage.getItem("Saved-movie")) {
+      const savedMovies = (JSON.parse(localStorage.getItem("Saved-movie")));
+      setSavedMovies(savedMovies);
+      stateSavedShordMovies(savedMovies, setSavedShortMovies);
+      setSavedFilterMoviesCards(savedMovies)
+      stateSavedShordMovies(savedMovies, setSavedShortFilterMoviesCards)
+    }
+  }, []);
+
+
+
+  /*   function handleMovieSave(items) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = items.likes.some(item =>
+      item === currentUser._id);
+    const likeRequest = !isLiked ? api.putLike(card._id) : api.deleteLike(card._id);
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    likeRequest
+      .then((newCard) => {
+        // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
+        const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+        // Обновляем стейт
+        setCards(newCards);
+      })
+      .catch((error) => {
+        console.log(`Хьюстон, у нас проблема при загрузке информации о лайках: ${error}`)
+      })
+  }
+ */
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -294,18 +337,19 @@ function App() {
             component={Movies}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
-            errorMessage={searchError}
-            setErrorMessage={setSearchError}
-            valueSearchMovies={searchQuery}
-            setValueSearchMovies={setSearchQuery}
-            allCArds={allMovies}
-            searchedCards={filterMoviesCards}
-            setSearchedCards={setFilterMoviesCards}
-            searchedShortCards={shortFilterMoviesCards}
-            setSearchedShortCards={setShortFilterMoviesCards}
-            isLoading={isLoading}
-            filterCheckbox={filterCheckbox}
-            setFilterChechbox={setFilterChechbox}
+            //пропсы компонента
+            errorMessage={searchError} // сообщение об ошибки
+            setErrorMessage={setSearchError} // сет сообщения об ошибки
+            valueSearchMovies={searchQuery} //запрос
+            setValueSearchMovies={setSearchQuery} // сет запроса
+            allCArds={allMovies} //все фильмы
+            searchedCards={filterMoviesCards} // отфильтрованные фильмы
+            setSearchedCards={setFilterMoviesCards} // сет отфильтрованных фильмов
+            searchedShortCards={shortFilterMoviesCards} // отфильтрованные короткие
+            setSearchedShortCards={setShortFilterMoviesCards} // сет отфильтрованных которких
+            isLoading={isLoading} // загрузка
+            filterCheckbox={filterCheckbox} // фильтр коротких
+            setFilterChechbox={setFilterChechbox} // сет фильтра коротких
           />
           {/* сохраненные фильмы */}
           <ProtectedRoute
@@ -313,6 +357,22 @@ function App() {
             component={SavedMovies}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
+            // пропсы компонента
+            savedErrorMessage={savedSearchError} // сообщение об ошибки
+            setSavedErrorMessage={setSavedSearchError} // сет сообщения об ошибки
+            valueSavedSearchMovies={savedSearchQuery} //запрос
+            setValueSavedSearchMovies={setSavedSearchQuery} // сет запроса
+            savedCards={savedMovies} //сохраненные фильмы
+            setSavedCards={setSavedMovies} // сет сохраненных фильмов
+            savedShortCards={savedShortMovies}
+            setSavedShortCards={setSavedShortMovies}
+            searchedSavedCards={savedFilterMoviesCards} // отфильтрованные фильмы
+            setSearchedSavedCards={setSavedFilterMoviesCards} // сет отфильтрованных фильмов
+            searchedSavedShortCards={savedShortFilterMoviesCards} // отфильтрованные короткие
+            setSearchedSavedShortCards={setSavedShortFilterMoviesCards} // сет отфильтрованных которких
+            isLoading={isLoading} // загрузка
+            filterCheckbox={filterCheckbox} // фильтр коротких
+            setFilterChechbox={setFilterChechbox} // сет фильтра коротких
           />
           {/* профиль */}
           <ProtectedRoute
@@ -320,6 +380,7 @@ function App() {
             component={Profile}
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
+            // пропсы компонента
             onSignOut={handleSignout}
             isInfoVisible={isInfoVisible}
             isSucces={isInfoSucces}
