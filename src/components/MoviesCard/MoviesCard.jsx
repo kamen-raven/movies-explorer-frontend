@@ -8,7 +8,6 @@ function MoviesCard({
   card,
   onCardSave,
   onCardDelete,
-  setSearchResutls,
   savedMovies,
 }) {
   const location = useLocation();

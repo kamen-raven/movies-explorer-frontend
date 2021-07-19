@@ -89,7 +89,6 @@ function Movies({
 
       {!isLoading && (
         <MoviesCardList
-          allCArds={allCArds}
           valueSearchMovies={valueSearchMovies}
           errorMessageCardList={errorMessage}
           setErrorMessageCardList={setErrorMessage}

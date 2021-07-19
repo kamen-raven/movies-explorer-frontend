@@ -8,7 +8,6 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import { useWindowWidthSize } from "../../hooks/useWindowWidthSize";
 
 function MoviesCardList({
-  allCArds,
   valueSearchMovies,
   errorMessageCardList,
   setErrorMessageCardList,
@@ -121,7 +120,6 @@ function MoviesCardList({
                 <MoviesCard card={card} key={card.id}
                   onCardSave={onMovieSave}
                   onCardDelete={onMovieDelete}
-                  setSearchResutls={setSearchResutls}
                   savedMovies={savedMovies}
                 />
               ))}
@@ -154,7 +152,6 @@ function MoviesCardList({
               {searchResults.map((card) => (
                 <MoviesCard card={card} key={card.movieId}
                   onCardDelete={onMovieDelete}
-                  setSearchResutls={setSearchResutls}
                   savedMovies={savedMovies}
                 />
               ))}

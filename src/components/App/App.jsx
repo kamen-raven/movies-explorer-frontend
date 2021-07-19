@@ -285,9 +285,6 @@ function App() {
     }
   }, []);
 
-
-
-
   function handleMovieSave(movie) {
     mainApi
       .createMovie(movie)
@@ -315,56 +312,13 @@ function App() {
             console.log(
               `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
             );
-          })
+          });
       })
 
       .catch((error) => {
         console.log(`Хьюстон, у нас проблема при сохранении фильма: ${error}`);
       });
   }
-
-  /*   useEffect(() => {
-    if(setSavedMovies) {
-      localStorage.setItem("Saved-movie", JSON.stringify(savedCards));
-    }
-  })
- */
-
-  /*
-
-
-    function handleMovieDelete(movie) {
-          // Снова проверяем, являемся ли мы владельцем карточек
-    const isOwn = movie.owner === currentUser._id;
-    // Отправляем запрос в API и получаем обновлённые данные
-    if (isOwn) {
-      mainApi.deleteMovieById(movie._id)
-        .then(() => {
-          // Формируем новый массив на основе имеющегося, убирая из него удаленный фильм
-          const newCards = savedMovies.filter((item) => item._id !== movie._id);
-          // Обновляем стейт
-          setSavedMovies(newCards);
-        })
-        .catch((error) => {
-          console.log(`Хьюстон, у нас проблема при удалении фильма из Сохраненных: ${error}`)
-        })
-    }
-    } */
-
-  /*   const handleMovieSave = useCallback((movie) => {
-    mainApi.createMovie(movie)
-    .then((res) => {
-      setSavedMovies([res, ...savedMovies])
-      console.log(savedMovies)
-      return savedMovies;
-    })
-    .then((savedMovies) => {
-      localStorage.setItem("Saved-movie", JSON.stringify(savedMovies));
-    })
-    .catch((error) => {
-      console.log(`Хьюстон, у нас проблема при сохранении фильма: ${error}`)
-    })
-  }, [savedMovies]); */
 
   function handleMovieDelete(movie) {
     // Снова проверяем, являемся ли мы владельцем карточек
@@ -391,14 +345,12 @@ function App() {
             });
         })
 
-
-
         .catch((error) => {
           console.log(
             `Хьюстон, у нас проблема при удалении фильма из Сохраненных: ${error}`
           );
         });
-      }
+    }
   }
 
   return (
