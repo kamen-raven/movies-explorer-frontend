@@ -8,6 +8,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import { useWindowWidthSize } from "../../hooks/useWindowWidthSize";
 
 function MoviesCardList({
+  allCArds,
   valueSearchMovies,
   errorMessageCardList,
   setErrorMessageCardList,
@@ -18,6 +19,8 @@ function MoviesCardList({
   filterCheckbox,
   savedMovies,
   savedShortMovies,
+  onMovieSave,
+  onMovieDelete
 }) {
   const location = useLocation();
   //-------------------------отображение кнопки ЕЩЕ------------------------//
@@ -98,6 +101,8 @@ function MoviesCardList({
     valueSearchMovies,
   ]);
 
+
+
   return (
     <section className="cards container">
       {/* если страница MOVIES */}
@@ -113,10 +118,12 @@ function MoviesCardList({
           <div className="cards__container">
             <div className="cards__list">
               {searchResults.slice(0, widthCountLoad).map((card) => (
-                <MoviesCard card={card} key={card.id} />
-                //       onCardClick={props.onCardClick}
-                //onCardLike={props.onCardLike}
-                //onCardDelete={props.onCardDelete}
+                <MoviesCard card={card} key={card.id}
+                  onCardSave={onMovieSave}
+                  onCardDelete={onMovieDelete}
+                  setSearchResutls={setSearchResutls}
+                  savedMovies={savedMovies}
+                />
               ))}
             </div>
             {widthCountLoad < searchResults.length && (
@@ -145,10 +152,11 @@ function MoviesCardList({
           <div className="cards__container">
             <div className="cards__list">
               {searchResults.map((card) => (
-                <MoviesCard card={card} key={card.movieId} />
-                //       onCardClick={props.onCardClick}
-                //onCardLike={props.onCardLike}
-                //onCardDelete={props.onCardDelete}
+                <MoviesCard card={card} key={card.movieId}
+                  onCardDelete={onMovieDelete}
+                  setSearchResutls={setSearchResutls}
+                  savedMovies={savedMovies}
+                />
               ))}
             </div>
           </div>

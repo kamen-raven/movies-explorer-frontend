@@ -63,19 +63,7 @@ class Api {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        country: data.country,
-        director: data.director,
-        duration: data.duration,
-        year: data.year,
-        description: data.description,
-        image: data.image.url, //image: data.image,
-        trailer: data.trailerLink, //trailer: data.trailer,
-        thumbnail: data.image.formats.thumbnail.url, //thumbnail: data.thumbnail,
-        movieId: data.id, //movieId: data.movieId,
-        nameRU: data.nameRU,
-        nameEN: data.nameEN
-      })
+      body: JSON.stringify(data)
     })
       .then(this._returnRes)
   }

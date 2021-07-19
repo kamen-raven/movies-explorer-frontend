@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
+
 
 import "./SavedMovies.css";
 
@@ -24,7 +24,8 @@ function SavedMovies({
   setSearchedSavedShortCards, // сет отфильтрованных которких
   isLoading, // загрузка
   filterCheckbox, // фильтр коротких
-  setFilterChechbox // сет фильтра коротких
+  setFilterChechbox, // сет фильтра коротких
+  onMovieDelete
 }) {
 
 
@@ -52,8 +53,6 @@ function SavedMovies({
 
   return (
     <main className="saved-movies">
-      <section className="saved-movies__search container">
-        <div className="saved-movies__search-container">
           <SearchForm
             placeholder={"Сохраненные фильмы"}
             //errorMessageSearchForm={savedErrorMessage}
@@ -63,8 +62,6 @@ function SavedMovies({
             filterCheckbox={filterCheckbox}
             setFilterChechbox={setFilterChechbox}
           />
-        </div>
-      </section>
 
       {isLoading && <Preloader />}
 
@@ -80,8 +77,7 @@ function SavedMovies({
           filterCheckbox={filterCheckbox}
           savedMovies={savedCards}
           savedShortMovies={savedShortCards}
-
-
+          onMovieDelete={onMovieDelete}
         />
       )}
     </main>

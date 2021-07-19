@@ -24,7 +24,7 @@ import mainApi from "../../api/movies-explorer-api"; // api сохранения
 import * as auth from "../../api/auth-api"; // api регистрации и авторизации
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { stateSavedShordMovies } from '../../utils/searchUtils';
+import { stateSavedShordMovies } from "../../utils/searchUtils";
 
 function App() {
   const history = useHistory();
@@ -153,16 +153,26 @@ function App() {
   //задавание стейта текущего пользователя и сохраненных пользователем фильмов
   useEffect(() => {
     if (loggedIn) {
-      mainApi
-        .getCurrentUser()
-        .then((res) => {
-          setCurretUser(res); //отрисовка данных пользователя
+      setIsLoading(true);
+      Promise.all([mainApi.getCurrentUser(), mainApi.getMovies()])
+        .then(([userValue, savedCards]) => {
+          setCurretUser(userValue); //отрисовка данных пользователя
+          setSavedMovies(savedCards.reverse());
+          return savedCards;
+        })
+        .then((savedCards) => {
+          localStorage.setItem("Saved-movie", JSON.stringify(savedCards));
         })
         .catch((error) => {
+          localStorage.removeItem("Saved-movie");
+          setSavedSearchError(
+            "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
+          );
           console.log(
             `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
           );
-        });
+        })
+        .finally(() => setIsLoading(false));
     } else {
       setCurretUser({});
     }
@@ -261,66 +271,135 @@ function App() {
   const [savedSearchError, setSavedSearchError] = useState(""); //стейт текста ошибки запроса поиска сохраненных карточек
 
   const [savedFilterMoviesCards, setSavedFilterMoviesCards] = useState([]); //стейт массива сохраненных карточек
-  const [savedShortFilterMoviesCards, setSavedShortFilterMoviesCards] = useState([]); //стейт массива короткометражек сохраненных
-
-  // загрузка данных сохраненных фильмов
-  useEffect(() => {
-    if (loggedIn && !localStorage.getItem("Saved-movie")) {
-      setIsLoading(true);
-
-      mainApi
-        .getMovies()
-        .then((res) => {
-          setSavedMovies(res);
-          return res;
-        })
-        .then((res) => {
-          localStorage.setItem("Saved-movie", JSON.stringify(res));
-        })
-        .catch((error) => {
-          localStorage.removeItem("Saved-movie");
-          setSavedSearchError(
-            "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
-          );
-          console.log(
-            `Хьюстон, у нас проблема при загрузке информации о сохраненных фильмах: ${error}`
-          );
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [loggedIn]);
+  const [savedShortFilterMoviesCards, setSavedShortFilterMoviesCards] =
+    useState([]); //стейт массива короткометражек сохраненных
 
   // эффект обновления стейта при повторном заходе
   useEffect(() => {
     if (localStorage.getItem("Saved-movie")) {
-      const savedMovies = (JSON.parse(localStorage.getItem("Saved-movie")));
+      const savedMovies = JSON.parse(localStorage.getItem("Saved-movie"));
       setSavedMovies(savedMovies);
       stateSavedShordMovies(savedMovies, setSavedShortMovies);
-      setSavedFilterMoviesCards(savedMovies)
-      stateSavedShordMovies(savedMovies, setSavedShortFilterMoviesCards)
+      setSavedFilterMoviesCards(savedMovies);
+      stateSavedShordMovies(savedMovies, setSavedShortFilterMoviesCards);
     }
   }, []);
 
 
 
-  /*   function handleMovieSave(items) {
-    // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = items.likes.some(item =>
-      item === currentUser._id);
-    const likeRequest = !isLiked ? api.putLike(card._id) : api.deleteLike(card._id);
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    likeRequest
-      .then((newCard) => {
-        // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-        const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-        // Обновляем стейт
-        setCards(newCards);
+
+  function handleMovieSave(movie) {
+    mainApi
+      .createMovie(movie)
+      .then((res) => {
+        setSavedMovies([res, ...savedMovies]);
+        console.log(savedMovies);
+        return savedMovies;
       })
+
+      .then(() => {
+        mainApi
+          .getMovies()
+          .then((res) => {
+            setSavedMovies(res.reverse());
+            return res;
+          })
+          .then((res) => {
+            localStorage.setItem("Saved-movie", JSON.stringify(res));
+          })
+          .catch((error) => {
+            localStorage.removeItem("Saved-movie");
+            setSavedSearchError(
+              "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
+            );
+            console.log(
+              `Хьюстон, у нас проблема при загрузке первоначальной информации: ${error}`
+            );
+          })
+      })
+
       .catch((error) => {
-        console.log(`Хьюстон, у нас проблема при загрузке информации о лайках: ${error}`)
-      })
+        console.log(`Хьюстон, у нас проблема при сохранении фильма: ${error}`);
+      });
   }
+
+  /*   useEffect(() => {
+    if(setSavedMovies) {
+      localStorage.setItem("Saved-movie", JSON.stringify(savedCards));
+    }
+  })
  */
+
+  /*
+
+
+    function handleMovieDelete(movie) {
+          // Снова проверяем, являемся ли мы владельцем карточек
+    const isOwn = movie.owner === currentUser._id;
+    // Отправляем запрос в API и получаем обновлённые данные
+    if (isOwn) {
+      mainApi.deleteMovieById(movie._id)
+        .then(() => {
+          // Формируем новый массив на основе имеющегося, убирая из него удаленный фильм
+          const newCards = savedMovies.filter((item) => item._id !== movie._id);
+          // Обновляем стейт
+          setSavedMovies(newCards);
+        })
+        .catch((error) => {
+          console.log(`Хьюстон, у нас проблема при удалении фильма из Сохраненных: ${error}`)
+        })
+    }
+    } */
+
+  /*   const handleMovieSave = useCallback((movie) => {
+    mainApi.createMovie(movie)
+    .then((res) => {
+      setSavedMovies([res, ...savedMovies])
+      console.log(savedMovies)
+      return savedMovies;
+    })
+    .then((savedMovies) => {
+      localStorage.setItem("Saved-movie", JSON.stringify(savedMovies));
+    })
+    .catch((error) => {
+      console.log(`Хьюстон, у нас проблема при сохранении фильма: ${error}`)
+    })
+  }, [savedMovies]); */
+
+  function handleMovieDelete(movie) {
+    // Снова проверяем, являемся ли мы владельцем карточек
+    const isOwn = movie.owner === currentUser._id;
+    // Отправляем запрос в API и получаем обновлённые данные
+    if (isOwn) {
+      mainApi
+        .deleteMovieById(movie._id)
+        .then(() => {
+          // Формируем новый массив на основе имеющегося, убирая из него удаленный фильм
+          const newCards = savedMovies.filter((item) => item._id !== movie._id);
+          // Обновляем стейт
+          setSavedMovies(newCards);
+        })
+        .then(() => {
+          mainApi
+            .getMovies()
+            .then((res) => {
+              setSavedMovies(res.reverse());
+              return res;
+            })
+            .then((res) => {
+              localStorage.setItem("Saved-movie", JSON.stringify(res));
+            });
+        })
+
+
+
+        .catch((error) => {
+          console.log(
+            `Хьюстон, у нас проблема при удалении фильма из Сохраненных: ${error}`
+          );
+        });
+      }
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -350,6 +429,9 @@ function App() {
             isLoading={isLoading} // загрузка
             filterCheckbox={filterCheckbox} // фильтр коротких
             setFilterChechbox={setFilterChechbox} // сет фильтра коротких
+            onMovieSave={handleMovieSave}
+            onMovieDelete={handleMovieDelete}
+            savedCards={savedMovies} //сохраненные фильмы
           />
           {/* сохраненные фильмы */}
           <ProtectedRoute
@@ -373,6 +455,7 @@ function App() {
             isLoading={isLoading} // загрузка
             filterCheckbox={filterCheckbox} // фильтр коротких
             setFilterChechbox={setFilterChechbox} // сет фильтра коротких
+            onMovieDelete={handleMovieDelete}
           />
           {/* профиль */}
           <ProtectedRoute

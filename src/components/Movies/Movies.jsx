@@ -22,6 +22,9 @@ function Movies({
   isLoading,
   filterCheckbox,
   setFilterChechbox,
+  onMovieSave,
+  onMovieDelete,
+  savedCards
 }) {
   const location = useLocation();
 
@@ -71,8 +74,7 @@ function Movies({
 
   return (
     <main className="main">
-      <section className="movies__search container">
-        <div className="movies__search-container">
+
           <SearchForm
             placeholder={"Фильмы"}
             //errorMessageSearchForm={errorMessage}
@@ -82,18 +84,21 @@ function Movies({
             filterCheckbox={filterCheckbox}
             setFilterChechbox={setFilterChechbox}
           />
-        </div>
-      </section>
+
       {isLoading && <Preloader />}
 
       {!isLoading && (
         <MoviesCardList
+          allCArds={allCArds}
           valueSearchMovies={valueSearchMovies}
           errorMessageCardList={errorMessage}
           setErrorMessageCardList={setErrorMessage}
           searchFullResult={searchedCards}
           searchShortResult={searchedShortCards}
           filterCheckbox={filterCheckbox}
+          onMovieSave={onMovieSave}
+          onMovieDelete={onMovieDelete}
+          savedMovies={savedCards}
         />
       )}
     </main>
