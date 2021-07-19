@@ -52,10 +52,9 @@ function App() {
 
   //обработчик регистрации
   function handleRegister({ email, password, username }) {
-    return auth
-      .register(email, password, username)
+    setIsLoading(true)
+    auth.register(email, password, username)
       .then((res) => {
-        setIsLoading(true)
         localStorage.setItem("token", res.token); //сохраняем токен в локальное хранилище
         handleLogin({ email, password }); //производим авторизацию сразу после регистрации
         setIsInfoSucces("Успех!");
@@ -81,10 +80,9 @@ function App() {
 
   //обработчик авторизации
   function handleLogin({ email, password }) {
-    return auth
-      .login(email, password)
+    setIsLoading(true);
+    auth.login(email, password)
       .then((res) => {
-        setIsLoading(true);
         localStorage.setItem("token", res.token); //сохраняем токен в локальное хранилище
         setLoggedIn(true);
         setIsInfoSucces("Успех!");
@@ -193,10 +191,10 @@ function App() {
 
   //изменение данных пользователя
   function handleUpdateUser(data) {
+    setIsLoading(true);
     mainApi
       .editUserInfo(data)
       .then((res) => {
-        setIsLoading(true);
         setCurretUser(res);
         setIsInfoSucces("Успех!");
         setIsInfoVisible(true); //успешное
