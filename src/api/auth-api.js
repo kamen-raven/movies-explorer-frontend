@@ -1,5 +1,5 @@
-const address = 'http://localhost:3000'; // адрес localhost api
-//const address = 'https://api.kamen.movies-explorer.nomoredomains.icu'; // адрес api
+//const address = 'http://localhost:3000'; // адрес localhost api
+const address = 'https://api.kamen.movies-explorer.nomoredomains.icu'; // адрес api
 
 
 // возвращение результата
