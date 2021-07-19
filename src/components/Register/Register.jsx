@@ -4,7 +4,7 @@ import { useFormWithValidation } from "../../hooks/useForm";
 
 import "./Register.css";
 
-function Register({ onRegister, isInfoVisible, isAuthSucces }) {
+function Register({ onRegister, isInfoVisible, isAuthSucces, isLoading }) {
   const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
 
   //обработчик отправки формы
@@ -26,6 +26,7 @@ function Register({ onRegister, isInfoVisible, isAuthSucces }) {
       isDisabled={!isValid}
       isInfoVisible={isInfoVisible}
       isInfoSucces={isAuthSucces}
+      isLoading={isLoading}
     >
       <fieldset className="register-page__fieldset">
         <label className="register-page__label" htmlFor="input-singup-username">

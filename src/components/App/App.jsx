@@ -55,6 +55,7 @@ function App() {
     return auth
       .register(email, password, username)
       .then((res) => {
+        setIsLoading(true)
         localStorage.setItem("token", res.token); //сохраняем токен в локальное хранилище
         handleLogin({ email, password }); //производим авторизацию сразу после регистрации
         setIsInfoSucces("Успех!");
@@ -74,7 +75,8 @@ function App() {
             `Хьюстон, у нас проблема при регистрации пользователя: ${error} `
           );
         }
-      });
+      })
+      .finally(() => setIsLoading(false));
   }
 
   //обработчик авторизации
@@ -82,6 +84,7 @@ function App() {
     return auth
       .login(email, password)
       .then((res) => {
+        setIsLoading(true);
         localStorage.setItem("token", res.token); //сохраняем токен в локальное хранилище
         setLoggedIn(true);
         setIsInfoSucces("Успех!");
@@ -102,7 +105,8 @@ function App() {
             `Хьюстон, у нас проблема при авторизации пользователя: ${error} - пользователь с указанной почтой и паролем не найден`
           );
         }
-      });
+      })
+      .finally(() => setIsLoading(false));
   }
 
   //проверка токена пользователя при повторном входе на сайт
@@ -192,6 +196,7 @@ function App() {
     mainApi
       .editUserInfo(data)
       .then((res) => {
+        setIsLoading(true);
         setCurretUser(res);
         setIsInfoSucces("Успех!");
         setIsInfoVisible(true); //успешное
@@ -211,7 +216,8 @@ function App() {
             `Хьюстон, у нас проблема при обновлении информации пользователя: ${error} `
           );
         }
-      });
+      })
+      .finally(() => setIsLoading(false));
   }
 
   //--------------СТРАНИЦА ФИЛЬМОВ MOVIES-------------//
@@ -416,6 +422,7 @@ function App() {
             isAuthChecking={authChecking}
             loggedIn={loggedIn}
             // пропсы компонента
+            isLoading={isLoading} // загрузка
             onSignOut={handleSignout}
             isInfoVisible={isInfoVisible}
             isSucces={isInfoSucces}
@@ -426,6 +433,7 @@ function App() {
           {/* регистрация */}
           <Route path="/signup">
             <Register
+              isLoading={isLoading} // загрузка
               onRegister={handleRegister}
               isInfoVisible={isInfoVisible}
               isAuthSucces={isInfoSucces}
@@ -434,6 +442,7 @@ function App() {
           {/* вход */}
           <Route path="/signin">
             <Login
+              isLoading={isLoading} // загрузка
               onLogin={handleLogin}
               isInfoVisible={isInfoVisible}
               isAuthSucces={isInfoSucces}
