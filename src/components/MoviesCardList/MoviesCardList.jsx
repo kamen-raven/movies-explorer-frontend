@@ -6,6 +6,17 @@ import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 import { useWindowWidthSize } from "../../hooks/useWindowWidthSize";
+import {
+  desktopWidth,
+  desktopRenderCards,
+  desktopMoreButton,
+  tabletWidth,
+  tabletRenderCards,
+  tabletMoreButton,
+  mobileWidth,
+  mobileRenderCards,
+  mobileMoreButton
+} from "../../utils/config";   // экспортируем размеры ширины экранов для отображения карточек и счетчиков
 
 function MoviesCardList({
   valueSearchMovies,
@@ -31,17 +42,17 @@ function MoviesCardList({
 
   // задаем изначальное количество отображаемых карточек
   const setInitialCount = useCallback(() => {
-    if (widthSize >= 1280) {
-      setRenderCountCards(12); //Ширина 1280px — 12 карточек по 3 в ряд.
-      setShowMoreButton(3); //Кнопка «Ещё» загружает по 3 карточки.
+    if (widthSize >= desktopWidth) {
+      setRenderCountCards(desktopRenderCards); //Ширина 1280px — 12 карточек по 3 в ряд.
+      setShowMoreButton(desktopMoreButton); //Кнопка «Ещё» загружает по 3 карточки.
     }
-    if (768 <= widthSize && widthSize < 1280) {
-      setRenderCountCards(8); //Ширина 768px — 8 карточек по 2 в ряд.
-      setShowMoreButton(2); //Кнопка «Ещё» загружает по 2 карточки.
+    if (tabletWidth <= widthSize && widthSize < desktopWidth) {
+      setRenderCountCards(tabletRenderCards); //Ширина 768px — 8 карточек по 2 в ряд.
+      setShowMoreButton(tabletMoreButton); //Кнопка «Ещё» загружает по 2 карточки.
     }
-    if (320 <= widthSize && widthSize < 768) {
-      setRenderCountCards(5); //Ширина 320px — 5 карточек по 1 в ряд.
-      setShowMoreButton(2); //Кнопка «Ещё» загружает по 2 карточки.
+    if (mobileWidth <= widthSize && widthSize < tabletWidth) {
+      setRenderCountCards(mobileRenderCards); //Ширина 320px — 5 карточек по 1 в ряд.
+      setShowMoreButton(mobileMoreButton); //Кнопка «Ещё» загружает по 2 карточки.
     }
     setWidthCountLoad(renderCountCards);
   }, [renderCountCards, widthSize]);

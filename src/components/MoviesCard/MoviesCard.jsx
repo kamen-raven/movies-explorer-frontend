@@ -4,6 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 import "./MoviesCard.css";
 import beatfilmLogo from "../../images/beatfilm_logo.svg";
 
+import {
+  hoursSetUp,
+  minutesSetUp
+} from "../../utils/config";
+
 function MoviesCard({
   card,
   onCardSave,
@@ -14,18 +19,7 @@ function MoviesCard({
   const isCardSaved = savedMovies.some((i) => i.movieId === card.id);
   const [isSaved, setIsSaved] = useState(isCardSaved ? true : false);
 
-  function hoursSetUp() {
-    let cardDuration = card.duration;
-    let hours = Math.floor(cardDuration / 60);
-    return hours;
-  }
-
-  function minutesSetUp() {
-    let cardDuration = card.duration;
-    let hours = Math.floor(cardDuration / 60);
-    let minutes = Math.floor(cardDuration - hours * 60);
-    return minutes;
-  }
+  const timeSetUp = `${hoursSetUp(card)}ч ${minutesSetUp(card)}м`
 
   const classButtonCheckSave = `card__button ${
     isCardSaved ? "card__button_type_saved" : "card__button_type_save"
@@ -77,7 +71,7 @@ function MoviesCard({
           <h2 className="card__title">
             {card.nameRU !== null ? card.nameRU : card.nameEN}
           </h2>
-          <p className="card__duration">{`${hoursSetUp()}ч ${minutesSetUp()}м`}</p>
+          <p className="card__duration">{timeSetUp}</p>
         </div>
         {!isSaved ? (
           <button
@@ -124,7 +118,7 @@ function MoviesCard({
           <h2 className="card__title">
             {card.nameRU !== null ? card.nameRU : card.nameEN}
           </h2>
-          <p className="card__duration">{`${hoursSetUp()}ч ${minutesSetUp()}м`}</p>
+          <p className="card__duration">{timeSetUp}</p>
         </div>
         <button
           className="card__button card__button_type_delete"
