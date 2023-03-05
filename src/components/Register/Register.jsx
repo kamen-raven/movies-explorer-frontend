@@ -1,17 +1,33 @@
 import React from "react";
 import AuthPage from "../AuthPage/AuthPage";
+import { useFormWithValidation } from "../../hooks/useForm";
 
-import './Register.css';
+import "./Register.css";
 
-function Register(props) {
+function Register({ onRegister, isInfoVisible, isAuthSucces, isLoading }) {
+  const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
+
+  //обработчик отправки формы
+  function handleSubmit(event) {
+    event.preventDefault();
+    resetFrom();
+    onRegister(values);
+  }
 
   return (
-    <AuthPage name="register"
-              title="Добро пожаловать!"
-              buttonText="Зарегистрироваться"
-              linkText="Уже зарегистрированы?"
-              link="Войти"
-              patch="/signin">
+    <AuthPage
+      name="register"
+      title="Добро пожаловать!"
+      buttonText="Зарегистрироваться"
+      linkText="Уже зарегистрированы?"
+      link="Войти"
+      patch="/signin"
+      onSubmit={handleSubmit}
+      isDisabled={!isValid}
+      isInfoVisible={isInfoVisible}
+      isInfoSucces={isAuthSucces}
+      isLoading={isLoading}
+    >
       <fieldset className="register-page__fieldset">
         <label className="register-page__label" htmlFor="input-singup-username">
           Имя
@@ -21,13 +37,20 @@ function Register(props) {
           id="input-singup-username"
           type="text"
           name="username"
+          minLength="2"
+          maxLength="30"
           autoComplete="off"
           required
+          pattern="[\sA-Za-zА-Яа-яЁё-]{2,30}"
+          value={values.username || ""}
+          onChange={handleChange}
         />
         <span
           className="register-page__input-error"
           id="input-singup-username-error"
-        >Тут будет отображаться ошибка валидации</span>
+        >
+          {errors.username ? "Введите имя пользователя" : " "}
+        </span>
         <label className="register-page__label" htmlFor="input-singup-email">
           E-mail
         </label>
@@ -38,11 +61,16 @@ function Register(props) {
           name="email"
           autoComplete="off"
           required
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          value={values.email || ""}
+          onChange={handleChange}
         />
         <span
           className="register-page__input-error"
           id="input-singup-email-error"
-        >Тут будет отображаться ошибка валидации</span>
+        >
+          {errors.email ? "Введите e-mail " : " "}
+        </span>
         <label className="register-page__label" htmlFor="input-singup-pass">
           Пароль
         </label>
@@ -51,15 +79,19 @@ function Register(props) {
           id="input-singup-pass"
           type="password"
           name="password"
-          minLength="3"
-          maxLength="20"
+          minLength="8"
           autoComplete="off"
           required
+          pattern="[\s0-9A-Za-zА-Яа-яЁё!?_\-@#$%^&.,*/]{8,}"
+          value={values.password || ""}
+          onChange={handleChange}
         />
         <span
           className="register-page__input-error"
           id="input-singup-pass-error"
-        >Тут будет отображаться ошибка валидации</span>
+        >
+          {errors.password ? "Пароль должен содержать не менее 8 символов" : " "}
+        </span>
       </fieldset>
     </AuthPage>
   );

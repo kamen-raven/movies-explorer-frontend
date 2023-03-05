@@ -47,13 +47,8 @@
   position: absolute;
   left: 0;
   margin-top: 40px;
-  visibility: hidden;
+  opacity: 1;
   transition: all .3s ease 0;
   max-width: 396px;
   z-index: 0;
 }
-
-.login-page__input-error_active {
-  visibility: visible;
-}
-

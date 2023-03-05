@@ -56,9 +56,18 @@
   width: 30px;
   height: 30px;
   border-radius: 36px;
-
   margin: 19px 14px;
   padding: 0;
+}
+
+.card__button:focus {
+  outline: #3456F3 auto 1px;
+}
+
+.card__button:hover {
+  cursor: pointer;
+  opacity: .5;
+  transition: background-image .5s ease-in-out;
 }
 
 .card__button_type_save {
@@ -66,14 +75,7 @@
 }
 
 .card__button_type_save:hover {
-  cursor: pointer;
   background-image: url(../../images/save_button_active.svg);
-  opacity: .5;
-  transition: background-image .5s ease-in-out;
-}
-
-.card__button_type_save:focus {
-  outline: #3456F3 auto 1px;
 }
 
 .card__button_type_saved {

@@ -69,6 +69,11 @@
   user-select: none
 }
 
+.auth-page__sumbit-button_disabled {
+  color: #C2C2C2;
+  background: #F8F8F8;
+  pointer-events: none;
+}
 
 .auth-page__sumbit-button:disabled {
   pointer-events: none;
@@ -82,22 +87,22 @@
 }
 
 .auth-page__sumbit-button_type_register {
-  margin-top: 134px;
+  margin-top: 84px;
 }
 
 @media (max-width: 425px) {
   .auth-page__sumbit-button_type_register {
-    margin-top: 220px;
+    margin-top: 180px;
     }
 }
 
 .auth-page__sumbit-button_type_login {
-  margin-top: 209px;
+  margin-top: 159px;
 }
 
 @media (max-width: 425px) {
   .auth-page__sumbit-button_type_login {
-    margin-top: 295px;
+    margin-top: 245px;
     }
 }
 

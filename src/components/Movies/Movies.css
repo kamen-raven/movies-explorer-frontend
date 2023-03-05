@@ -1,0 +1,36 @@
+.movies {
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+}
+
+.movies__search {
+  display: flex;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.movies__search-container {
+  max-width: 1140px;
+  width: 100%;
+  margin: 70px 70px 10px;
+  padding-bottom: 70px;
+  border-bottom: 1px solid #E8E8E8;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .movies__search-container {
+    margin: 80px 30px 10px;
+  }
+}
+
+@media (max-width: 528px) {
+  .movies__search-container {
+    margin: 80px 10px 10px;
+    padding-bottom: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+}
